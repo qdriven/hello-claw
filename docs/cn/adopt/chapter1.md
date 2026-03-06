@@ -163,7 +163,34 @@ openclaw dashboard
 
 如果 OpenClaw 能正确执行命令并返回结果，说明一切正常。
 
-## 7. 常用命令
+## 7. 推荐配置：Coding Plan 模式
+
+**重要提示**：OpenClaw 在执行复杂任务时会消耗大量 token。如果对话持续很久，上下文会变得很长，API 费用会快速增加。为了控制成本和提高效率，强烈推荐启用 Coding Plan 模式。
+
+### 7.1 什么是 Coding Plan
+
+Coding Plan 是一种订阅服务，由阿里云百炼、智谱 GLM、联通云等平台提供，以固定月费访问多个编码优化的 AI 模型。相比按 token 计费，这种方式更经济实惠。
+
+### 7.2 配置方法
+
+1. 重新运行配置向导：
+
+```bash
+openclaw configure
+```
+
+2. 在向导中：
+   - 选择你的 Coding Plan 提供商（如阿里云百炼、智谱 GLM）
+   - 输入从订阅服务获取的 API Key
+   - 选择启用 Coding Plan 模式
+
+3. 或者通过 Web UI 配置：
+   - 打开控制面板：`openclaw dashboard`
+   - 进入"配置" → "All Settings" → "RAW"
+   - 在 `models` 配置中添加你的 Coding Plan 提供商信息
+   - 保存并重启 Gateway
+
+## 8. 常用命令
 
 ### 基础命令
 
