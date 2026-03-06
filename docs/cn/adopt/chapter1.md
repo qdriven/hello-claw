@@ -4,7 +4,7 @@
 
 ## 1. 系统要求
 
-- **操作系统**：macOS、Linux、或 Windows（需要 WSL2）
+- **操作系统**：macOS、Linux、或 Windows（推荐 WSL2）
 - **Node.js**：22 或更高版本
 - **内存**：至少 1GB，推荐 4GB
 - **端口**：18789 需要可用
@@ -21,25 +21,30 @@ node --version
 
 ### Windows 用户
 
-**方案一：直接安装（推荐新手）**
+**方案一：使用一键安装脚本（推荐）**
 
-访问 [nodejs.org](https://nodejs.org) 下载 Windows 安装包（选择 LTS 版本），运行安装程序，一路默认即可。
-
-安装完成后打开 PowerShell 验证：
+打开 PowerShell（管理员模式），运行：
 
 ```powershell
-node --version
+iwr -useb https://openclaw.ai/install.ps1 | iex
 ```
 
-**方案二：使用 WSL2（推荐开发者）**
-
-WSL2 提供完整的 Linux 环境，兼容性更好。打开 PowerShell 管理员模式：
+这个脚本会自动安装 Node.js 和 OpenClaw。如果遇到权限错误，先运行：
 
 ```powershell
-wsl --install
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-重启后进入 WSL2，按照 Linux 安装方式继续。
+**方案二：手动安装**
+
+1. 下载 nvm-windows：访问 [github.com/coreybutler/nvm-windows/releases](https://github.com/coreybutler/nvm-windows/releases) 下载 `nvm-setup.exe`
+2. 安装后重新打开 PowerShell（管理员模式）
+3. 安装 Node.js 22：
+
+```powershell
+nvm install 22
+nvm use 22
+```
 
 ### macOS 用户
 
