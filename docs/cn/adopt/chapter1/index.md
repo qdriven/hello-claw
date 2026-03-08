@@ -53,7 +53,9 @@ node --version
 
 ## 2. 安装 Node.js
 
-### Windows 用户
+> **国内网络提示**：下面的安装方法默认从国外服务器下载，速度可能较慢。如果遇到下载超时，请参考本节末尾的"国内镜像加速"。
+
+### Windows 用户（不使用 WSL2）
 
 **方案一：使用一键安装脚本（推荐）**
 
@@ -80,6 +82,10 @@ nvm install 22
 nvm use 22
 ```
 
+### Windows 用户（使用 WSL2）
+
+如果你已经按照上面的步骤安装了 WSL2，打开 Ubuntu 终端（开始菜单搜索"Ubuntu"），然后按照下面"Linux 用户"的步骤操作即可。
+
 ### macOS 用户
 
 使用 Homebrew 安装：
@@ -88,9 +94,24 @@ nvm use 22
 brew install node@22
 ```
 
-### Linux 用户
+### Linux 用户（含 WSL2）
 
-使用 nvm（推荐）：
+**方案一：apt 直接安装（推荐，最简单）**
+
+```bash
+# 添加 NodeSource 仓库并安装 Node.js 22
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
+sudo apt install -y nodejs
+
+# 验证
+node --version
+```
+
+> 这是最简单的方式，一条命令搞定。适用于 Ubuntu、Debian 及 WSL2。
+
+**方案二：使用 nvm 管理多版本**
+
+如果你需要在多个 Node.js 版本间切换，可以使用 nvm：
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
@@ -98,6 +119,57 @@ source ~/.bashrc
 nvm install 22
 nvm use 22
 ```
+
+### 国内镜像加速
+
+国内网络访问国外服务器可能较慢甚至超时。以下是各平台的镜像加速方案。
+
+<details>
+<summary>Linux / macOS / WSL2 镜像加速</summary>
+
+**apt 方式（推荐）**：NodeSource 仓库一般国内可以直接访问。如果 `curl` 下载太慢，可以尝试先设置代理，或者直接用 nvm + 镜像的方式。
+
+**nvm 方式加速**：
+
+```bash
+# 设置 nvm 从淘宝镜像下载 Node.js
+export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node
+
+# 写入配置文件，永久生效
+echo 'export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node' >> ~/.bashrc
+source ~/.bashrc
+
+nvm install 22
+```
+
+**npm 镜像**（安装完 Node.js 后设置）：
+
+```bash
+npm config set registry https://registry.npmmirror.com
+```
+
+</details>
+
+<details>
+<summary>Windows（非 WSL2）镜像加速</summary>
+
+**nvm-windows 镜像**：
+
+```powershell
+nvm node_mirror https://npmmirror.com/mirrors/node
+nvm install 22
+nvm use 22
+```
+
+**npm 镜像**：
+
+```powershell
+npm config set registry https://registry.npmmirror.com
+```
+
+</details>
+
+> **验证镜像设置**：运行 `npm config get registry`，如果输出 `https://registry.npmmirror.com/` 说明设置成功。
 
 ## 3. 安装 OpenClaw
 
