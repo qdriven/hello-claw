@@ -8,7 +8,7 @@
 
 | 问题 | 原因 | 解决方案 |
 |------|------|---------|
-| `npm install -g openclaw` 失败 | Node.js 版本过低 | 升级到 Node.js 18+ |
+| `npm install -g openclaw` 失败 | Node.js 版本过低 | 升级到 Node.js 22+ |
 | 权限错误 | npm 全局安装权限不足 | 使用 `sudo` 或配置 npm prefix |
 | 网络超时 | npm 源不可访问 | 切换为淘宝源：`npm config set registry https://registry.npmmirror.com` |
 
@@ -35,7 +35,7 @@
 |------|------|---------|
 | `clawhub install` 失败 | 网络问题或技能名称错误 | 检查网络，确认 slug 正确 |
 | 技能安装后不可用 | 缺少系统依赖 | 检查 SKILL.md 中的 requirements |
-| API Key 配置后仍报错 | config.yaml 格式错误 | 用 `openclaw config` 交互式配置 |
+| API Key 配置后仍报错 | openclaw.json 格式错误 | 用 `openclaw config` 交互式配置 |
 
 ## 2. 日志诊断
 
@@ -57,13 +57,16 @@ openclaw logs --skill weather --last 20
 
 ### 2.2 日志级别
 
-```yaml
-# ~/.openclaw/config.yaml
-logging:
-  level: info          # debug | info | warn | error
-  file: true           # 是否写入文件
-  maxSize: "50mb"      # 单个日志文件大小上限
-  maxFiles: 10         # 保留的日志文件数量
+```json
+// openclaw.json 中的 logging 配置
+{
+  "logging": {
+    "level": "info",
+    "file": true,
+    "maxSize": "50mb",
+    "maxFiles": 10
+  }
+}
 ```
 
 开发调试时可以临时开启 debug 级别：
@@ -91,11 +94,14 @@ clawhub uninstall rarely-used-skill
 
 **启用缓存**：
 
-```yaml
-cache:
-  enabled: true
-  ttl: 3600            # 缓存 1 小时
-  maxSize: "100mb"
+```json
+{
+  "cache": {
+    "enabled": true,
+    "ttl": 3600,
+    "maxSize": "100mb"
+  }
+}
 ```
 
 ### 3.2 内存优化
@@ -127,7 +133,7 @@ openclaw usage --by-skill --period month
 
 ```
 ~/.openclaw/
-├── config.yaml          # 配置文件（API Key、渠道设置）
+├── openclaw.json        # 配置文件（API Key、渠道设置）
 ├── SOUL.md              # 人格设定
 ├── MEMORY.md            # 长期记忆
 ├── skills/              # 已安装技能及配置
@@ -143,7 +149,7 @@ tar -czf openclaw-backup-$(date +%Y%m%d).tar.gz ~/.openclaw/
 
 # 只备份配置（不含对话历史）
 tar -czf openclaw-config-$(date +%Y%m%d).tar.gz \
-  ~/.openclaw/config.yaml \
+  ~/.openclaw/openclaw.json \
   ~/.openclaw/SOUL.md \
   ~/.openclaw/MEMORY.md \
   ~/.openclaw/skills/ \
@@ -172,7 +178,7 @@ openclaw --version
 npm update -g openclaw
 
 # Docker 用户
-docker pull openclaw/openclaw:latest
+docker pull ghcr.io/openclaw/openclaw:latest
 docker compose up -d
 ```
 

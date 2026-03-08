@@ -44,7 +44,7 @@
 ssh user@your-server-ip
 
 # 安装 Node.js（如果没有）
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
 sudo apt-get install -y nodejs
 
 # 安装 OpenClaw
@@ -67,7 +67,14 @@ export ANTHROPIC_API_KEY="sk-ant-xxxxx"
 
 ### 3.3 使用 systemd 保持运行
 
-创建系统服务让 OpenClaw 在后台持续运行：
+创建系统服务让 OpenClaw 在后台持续运行。OpenClaw 提供了自动生成 systemd 配置的命令：
+
+```bash
+# 自动安装 systemd 服务（推荐）
+openclaw onboard --install-daemon
+```
+
+如果需要手动配置：
 
 ```bash
 sudo cat > /etc/systemd/system/openclaw.service << 'EOF'
@@ -111,7 +118,7 @@ Docker 提供了更好的隔离性和可移植性。
 
 ```bash
 # 拉取镜像
-docker pull openclaw/openclaw:latest
+docker pull ghcr.io/openclaw/openclaw:latest
 
 # 创建配置目录
 mkdir -p ~/openclaw-data
@@ -122,7 +129,13 @@ docker run -d \
   --restart always \
   -v ~/openclaw-data:/home/openclaw/.openclaw \
   -e ANTHROPIC_API_KEY="sk-ant-xxxxx" \
-  openclaw/openclaw:latest gateway start
+  -p 18789:18789 \
+  ghcr.io/openclaw/openclaw:latest gateway start
+```
+
+> **注意**：容器内运行用户为 uid 1000（node）。宿主机挂载目录需确保权限正确：
+> ```bash
+> chown -R 1000:1000 ~/openclaw-data
 ```
 
 ### 4.2 使用 Docker Compose
@@ -132,11 +145,13 @@ docker run -d \
 version: '3.8'
 services:
   openclaw:
-    image: openclaw/openclaw:latest
+    image: ghcr.io/openclaw/openclaw:latest
     container_name: openclaw
     restart: always
     volumes:
       - ./data:/home/openclaw/.openclaw
+    ports:
+      - "18789:18789"
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - NODE_ENV=production
@@ -201,7 +216,17 @@ openclaw logs --level error --last 50
 
 ### 6.1 健康检查
 
-设置一个定时任务让 OpenClaw 自我检查：
+OpenClaw 提供内置健康检查端点（默认端口 18789）：
+
+```bash
+# 存活检查（liveness）
+curl http://localhost:18789/healthz
+
+# 就绪检查（readiness）
+curl http://localhost:18789/readyz
+```
+
+也可以设置一个定时任务让 OpenClaw 自我检查：
 
 ```
 每小时检查一次自身状态，如果发现异常就发送告警到 Telegram
@@ -231,7 +256,7 @@ du -sh ~/openclaw-data/*
 
 ## 7. 常见问题
 
-**服务启动失败**：检查 Node.js 版本（需要 18+）、API Key 是否正确、端口是否被占用。
+**服务启动失败**：检查 Node.js 版本（需要 22+）、API Key 是否正确、端口是否被占用。
 
 **内存不足**：OpenClaw 运行时通常占用 500MB-1GB 内存。如果服务器内存紧张，考虑升级配置或使用 swap。
 

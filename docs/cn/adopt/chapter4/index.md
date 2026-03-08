@@ -1,18 +1,22 @@
 # 第四章 Skills 技能系统
 
-OpenClaw 的技能系统就像手机的 App Store，让你可以为龙虾安装各种能力扩展。想让它查天气？安装天气技能。想让它管理 Gmail？安装邮件技能。截至 2026 年初，社区维护的 ClawHub 注册表已有超过 5,700 个技能，覆盖生产力、开发、运维、内容创作等多个领域。
+OpenClaw 的技能系统就像手机的 App Store，让你可以为龙虾安装各种能力扩展。想让它查天气？安装天气技能。想让它管理 Gmail？安装邮件技能。截至 2026 年初，社区维护的 ClawHub 注册表已有超过 13,000 个技能，覆盖生产力、开发、运维、内容创作等多个领域。
 
 ## 1. 什么是技能
 
-技能（Skill）本质上是一组工具定义和使用说明的组合，以 `SKILL.md` 文件为核心，存储在 `~/.openclaw/skills/` 目录下。每个技能包含三个核心部分：
+技能（Skill）本质上是一组提示词指令的集合，以 `SKILL.md` 文件为核心。技能从三个位置按优先级加载：
 
-**工具定义**：告诉 OpenClaw 这个技能能做什么。比如天气技能提供 `get_weather` 工具，可以查询指定城市的天气。
+1. **工作区技能**（workspace）：项目目录下的技能，优先级最高
+2. **托管技能**（managed）：`~/.openclaw/skills/` 目录下通过 `clawhub` 安装的技能
+3. **内置技能**（bundled）：OpenClaw 自带的基础技能（web-search、web-fetch、browser、filesystem、shell）
 
-**配置模板**：定义技能需要哪些配置信息。比如 Gmail 技能需要 API 密钥和邮箱地址。
+每个技能包含两个核心部分：
 
-**提示词指令**：教 OpenClaw 如何更好地使用这些工具。比如"查询天气时优先使用用户所在城市"。
+**元数据（YAML frontmatter）**：定义技能名称、描述、版本号、门控条件等。
 
-安装技能后，OpenClaw 会动态加载——不需要重启，下一轮对话立即生效。你不需要每次都详细解释怎么做，只需要说"帮我查天气"，OpenClaw 就知道该调用哪个工具。
+**提示词指令（Markdown 正文）**：教 OpenClaw 如何使用工具完成任务。比如"查询天气时优先使用用户所在城市"。
+
+技能在会话启动时快照固定（snapshot），形成本次会话的"动作字母表"。开发时可通过热重载（hot-reload）实时更新。技能配置统一存放在工作区级的 `openclaw.json`（JSON 格式）中，而非技能目录内部。
 
 ### 1.1 技能的形式化定义
 
@@ -22,31 +26,38 @@ $$M = (Q, \Sigma, \delta, q_0, F)$$
 
 其中：
 
-- **Q**（状态集）= {未安装, 已安装, 活跃, 已禁用, 更新中, 错误}
-- **Sigma**（输入字母表）= {install, activate, deactivate, update, uninstall, error, resolve}
-- **delta**（转移函数）：定义状态之间的转换规则
-- **q0**（初始状态）= 未安装
-- **F**（接受状态集）= {活跃}
+- **Q**（状态集）= {Unregistered, Installed, Disabled, Gated, Active, HotReloading, SoftDeleted}，共 7 个状态
+- **Σ**（输入字母表）= {install, uninstall, enable, disable, gate, grant, revoke, edit, hot-reload, soft-delete, restore}，共 11 个输入符号
+- **δ**（转移函数）：定义状态之间的转换规则（见下方状态图）
+- **q₀**（初始状态）= Unregistered
+- **F**（接受状态集）= {Active}
 
 状态转移关系如下：
 
 ```
-未安装 --install--> 已安装 --activate--> 活跃
-活跃 --deactivate--> 已禁用 --activate--> 活跃
-活跃 --update--> 更新中 --resolve--> 活跃
-活跃 --error--> 错误 --resolve--> 活跃
-活跃 --uninstall--> 未安装
-已禁用 --uninstall--> 未安装
-错误 --uninstall--> 未安装
+Unregistered --install--> Installed --enable--> Active
+Active --disable--> Disabled --enable--> Active
+Active --gate--> Gated --grant--> Active
+Gated --revoke--> Disabled
+Active --edit--> HotReloading --hot-reload--> Active
+Active --soft-delete--> SoftDeleted --restore--> Installed
+Active --uninstall--> Unregistered
+Disabled --uninstall--> Unregistered
+SoftDeleted --uninstall--> Unregistered
 ```
+
+其中 **Gated** 状态表示技能需要满足门控条件（如 API Key 配置）才能激活，**HotReloading** 状态用于开发时实时编辑技能而不中断会话。
 
 这个形式化模型的意义在于：
 
 1. **状态可预测**：技能在任意时刻只能处于一个确定状态，避免了"薛定谔的插件"问题
 2. **转换可验证**：每个操作（输入符号）只能在特定状态下执行，非法操作会被拒绝
 3. **生命周期可追踪**：通过记录状态转移序列，可以完整还原技能的使用历史
+4. **会话一致性**：技能在会话启动时快照固定，保证了行为的形式正则性（formal regularity）
 
-在实际使用中，OpenClaw 会在安装时自动将技能从"未安装"转移到"已安装"并立即"激活"（合并为一步），但底层仍然遵循这个状态机模型。
+> 参考文献：*Agents as Automata*（arxiv.org/html/2510.23487v1）将 Agent 行为建模为有限自动机，*MetaAgent FSM*（arxiv.org/html/2507.22606v1）进一步将此框架扩展到多 Agent 编排。
+
+在实际使用中，`clawhub install` 会自动将技能从 Unregistered → Installed → Active（合并为一步），但底层仍然遵循这个状态机模型。
 
 ## 2. ClawHub：技能注册表
 
@@ -144,6 +155,9 @@ frontmatter 字段说明：
 | description | 一句话功能描述 | 是 |
 | version | 语义化版本号 | 是 |
 | requirements | 系统依赖列表（如 python3, curl） | 否 |
+| user-invocable | 是否可由用户通过斜杠命令手动调用 | 否 |
+| disable-model-invocation | 禁止模型自动调用，只能用户手动触发 | 否 |
+| metadata | 单行 JSON，定义门控条件等高级配置 | 否 |
 
 ### 3.2 目录结构
 
@@ -151,13 +165,14 @@ frontmatter 字段说明：
 
 ```
 ~/.openclaw/skills/weather/
-├── SKILL.md          # 核心：技能说明和指令
-├── config.yaml       # 可选：配置模板（API Key 等）
+├── SKILL.md          # 核心：技能说明和指令（唯一必需文件）
 ├── scripts/          # 可选：辅助脚本
 │   └── fetch.sh
 └── examples/         # 可选：使用示例
     └── demo.md
 ```
+
+> **注意**：技能目录内没有 `config.yaml` 或 `tools.yaml`。所有技能配置统一在工作区级的 `openclaw.json` 中管理，而非分散在各技能目录中。
 
 ## 4. 常用技能推荐
 
@@ -218,17 +233,28 @@ frontmatter 字段说明：
 
 ## 5. 配置技能
 
-安装后可以随时修改技能配置。配置文件位于 `~/.openclaw/skills/<skill-name>/config.yaml`：
+安装后可以随时修改技能配置。技能配置统一存放在工作区级的 `openclaw.json` 中：
 
-```yaml
-# ~/.openclaw/skills/weather/config.yaml
-api_key: "your_api_key"
-default_city: "Beijing"
-units: "metric"
-language: "zh_CN"
+```json
+{
+  "skills": {
+    "weather": {
+      "api_key": "your_api_key",
+      "default_city": "Beijing",
+      "units": "metric",
+      "language": "zh_CN"
+    }
+  }
+}
 ```
 
-对于需要 API Key 的技能，安装时会自动引导你输入。你也可以后续手动编辑配置文件。
+也可以通过交互式命令配置：
+
+```bash
+openclaw config
+```
+
+对于需要 API Key 的技能，安装时会自动引导你输入。你也可以后续通过 `openclaw config` 或直接编辑 `openclaw.json` 修改。
 
 ## 6. 创建自定义技能
 
@@ -312,7 +338,18 @@ cp -r my-ip ~/.openclaw/skills/
 
 **保护敏感信息**：技能配置中的 API 密钥存储在本地，但仍要注意不要将 `~/.openclaw/skills/` 目录上传到公开仓库。
 
-**测试后再用**：新安装的技能先在测试环境试用，确认没问题后再用于生产任务。
+**测试后再用**：新安装的技能先在测试环境试用，确认没问题后再用于生产任务。对于未经审计的第三方技能，建议在 Docker 沙箱中运行。
+
+> **安全警告**：2026 年 2 月的安全审计（ClawHavoc 事件）发现 ClawHub 上约 12% 的技能存在恶意行为或安全漏洞。OpenClaw 团队已进行清理，但安装第三方技能时仍需保持警惕。建议优先使用高星标技能，并检查 SKILL.md 中的指令内容。
+
+## 9. 技能与 MCP 的关系
+
+OpenClaw 的技能系统与 MCP（Model Context Protocol）是两个不同层面的概念：
+
+- **技能（Skills）**：提示词层面的指令包，定义 Agent 的行为规则和工具使用方式
+- **MCP**：工具层面的进程协议，提供外部工具的标准化接口
+
+截至目前，OpenClaw 并未原生支持 MCP（相关 Issue #4834 已关闭，状态为"not planned"）。但社区已有大量 MCP 包装器（wrapper），可将 MCP 服务器的能力通过技能接口暴露给 OpenClaw 使用。
 
 ---
 

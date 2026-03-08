@@ -141,21 +141,30 @@ clawhub install sql-toolkit
 
 ### 4.2 配置数据库连接
 
-```yaml
-# ~/.openclaw/skills/sql-toolkit/config.yaml
-connections:
-  production:
-    type: postgresql
-    host: localhost
-    port: 5432
-    database: myapp
-    user: readonly_user
-    password: "your_password"
-  analytics:
-    type: mysql
-    host: analytics.company.com
-    port: 3306
-    database: analytics
+```json
+// openclaw.json 中的 sql-toolkit 配置
+{
+  "skills": {
+    "sql-toolkit": {
+      "connections": {
+        "production": {
+          "type": "postgresql",
+          "host": "localhost",
+          "port": 5432,
+          "database": "myapp",
+          "user": "readonly_user",
+          "password": "your_password"
+        },
+        "analytics": {
+          "type": "mysql",
+          "host": "analytics.company.com",
+          "port": 3306,
+          "database": "analytics"
+        }
+      }
+    }
+  }
+}
 ```
 
 ## 5. 浏览器自动化
@@ -210,7 +219,7 @@ clawhub install home-assistant
 
 **最小权限原则**：每个技能只授予必要的权限。Gmail 技能不需要 Drive 权限，数据库技能只需要只读权限。
 
-**凭证安全**：所有 API Key 和 Token 存储在本地 `config.yaml` 中，不要提交到 Git 仓库。建议将 `~/.openclaw/skills/*/config.yaml` 加入全局 `.gitignore`。
+**凭证安全**：所有 API Key 和 Token 存储在本地 `openclaw.json` 中，不要提交到 Git 仓库。建议将 `openclaw.json` 加入 `.gitignore`。
 
 **错误处理**：外部服务可能出现超时、限流等问题。OpenClaw 会自动重试，但如果持续失败，检查 API 配额和网络连接。
 

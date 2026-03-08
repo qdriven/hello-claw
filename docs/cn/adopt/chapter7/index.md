@@ -8,12 +8,14 @@ OpenClaw 不绑定任何单一 LLM 提供商。你可以同时配置 Claude、GP
 
 | 提供商 | 模型 | 特点 | 适合任务 |
 |--------|------|------|---------|
-| Anthropic | Claude 4.6 Opus | 最强推理，200K 上下文 | 复杂分析、架构设计 |
-| Anthropic | Claude 4.6 Sonnet | 均衡性能 | 日常编码、文档生成 |
-| Anthropic | Claude 4.5 Haiku | 速度快、成本低 | 简单查询、格式转换 |
-| OpenAI | GPT-5 | 强推理能力 | 数学、逻辑推理 |
-| OpenAI | GPT-4o | 多模态支持 | 图片理解、语音处理 |
-| Google | Gemini 3 Pro | 1M 上下文 | 大文件分析 |
+| Anthropic | `anthropic/claude-opus-4-6` | 最强推理，200K 上下文 | 复杂分析、架构设计 |
+| Anthropic | `anthropic/claude-sonnet-4-6` | 均衡性能 | 日常编码、文档生成 |
+| Anthropic | `anthropic/claude-haiku-4-5` | 速度快、成本低 | 简单查询、格式转换 |
+| OpenAI | `openai/gpt-5` | 强推理能力 | 数学、逻辑推理 |
+| OpenAI | `openai/gpt-4o` | 多模态支持 | 图片理解、语音处理 |
+| Google | `google/gemini-3-pro` | 1M 上下文 | 大文件分析 |
+
+> **模型标识格式**：OpenClaw 统一使用 `provider/model-name` 格式标识模型。目前支持 12 个官方提供商：Ollama、OpenAI、Anthropic、OpenRouter、Amazon Bedrock、Vercel AI Gateway、Moonshot AI、MiniMax、OpenCode Zen、GLM、Z.AI、Synthetic。
 
 ### 1.2 本地模型（Ollama）
 
@@ -51,29 +53,31 @@ openclaw config set llm.fallback "gpt-4o"
 
 ### 2.3 配置文件示例
 
-```yaml
-# ~/.openclaw/config.yaml
-llm:
-  default: claude-sonnet-4-6
-  fallback: gpt-4o
-  providers:
-    anthropic:
-      apiKey: "sk-ant-xxxxx"
-      models:
-        - claude-opus-4-6
-        - claude-sonnet-4-6
-        - claude-haiku-4-5
-    openai:
-      apiKey: "sk-xxxxx"
-      models:
-        - gpt-5
-        - gpt-4o
-    ollama:
-      baseUrl: "http://localhost:11434"
-      models:
-        - qwen2.5:72b
-        - deepseek-v3
+```json
+// openclaw.json
+{
+  "llm": {
+    "default": "anthropic/claude-sonnet-4-6",
+    "fallback": "openai/gpt-4o",
+    "providers": {
+      "anthropic": {
+        "apiKey": "sk-ant-xxxxx",
+        "models": ["claude-opus-4-6", "claude-sonnet-4-6", "claude-haiku-4-5"]
+      },
+      "openai": {
+        "apiKey": "sk-xxxxx",
+        "models": ["gpt-5", "gpt-4o"]
+      },
+      "ollama": {
+        "baseUrl": "http://localhost:11434",
+        "models": ["qwen2.5:72b", "deepseek-v3"]
+      }
+    }
+  }
+}
 ```
+
+> **注意**：OpenClaw 的配置文件为 `openclaw.json`（JSON 格式），不是 YAML。
 
 ## 3. 模型路由策略
 
@@ -81,29 +85,42 @@ llm:
 
 OpenClaw 可以根据任务自动选择合适的模型：
 
-```yaml
-llm:
-  routing:
-    # 简单任务用便宜模型
-    simple: claude-haiku-4-5     # 天气查询、格式转换
-    # 日常任务用中等模型
-    standard: claude-sonnet-4-6  # 编码、文档、邮件
-    # 复杂任务用最强模型
-    complex: claude-opus-4-6     # 架构设计、深度分析
+```json
+{
+  "llm": {
+    "routing": {
+      "simple": "anthropic/claude-haiku-4-5",
+      "standard": "anthropic/claude-sonnet-4-6",
+      "complex": "anthropic/claude-opus-4-6"
+    }
+  }
+}
+```
+
+运行时也可以通过命令快速切换模型：
+
+```
+/model fast
 ```
 
 ### 3.2 基于技能类型
 
 不同技能可以指定不同的模型：
 
-```yaml
-skills:
-  weather:
-    model: claude-haiku-4-5      # 天气查询不需要强模型
-  code-reviewer:
-    model: claude-opus-4-6       # 代码审查需要强推理
-  translator:
-    model: gpt-4o                # 翻译用 GPT 效果好
+```json
+{
+  "skills": {
+    "weather": {
+      "model": "anthropic/claude-haiku-4-5"
+    },
+    "code-reviewer": {
+      "model": "anthropic/claude-opus-4-6"
+    },
+    "translator": {
+      "model": "openai/gpt-4o"
+    }
+  }
+}
 ```
 
 ## 4. 本地模型部署（Ollama）
@@ -142,14 +159,20 @@ openclaw config set llm.default "ollama/qwen2.5:72b"
 
 推荐的混合部署：本地模型处理日常任务（零成本），复杂任务切换到云端 API：
 
-```yaml
-llm:
-  default: ollama/qwen2.5:72b       # 日常：本地免费
-  fallback: claude-sonnet-4-6        # 复杂：云端按需
-  routing:
-    simple: ollama/phi4:14b          # 简单：本地轻量
-    complex: claude-opus-4-6         # 重要：云端最强
+```json
+{
+  "llm": {
+    "default": "ollama/qwen2.5:72b",
+    "fallback": "anthropic/claude-sonnet-4-6",
+    "routing": {
+      "simple": "ollama/phi4:14b",
+      "complex": "anthropic/claude-opus-4-6"
+    }
+  }
+}
 ```
+
+> **Ollama 自动发现**：OpenClaw 会自动查询 Ollama 的 `/api/tags` 和 `/api/show` 接口，发现本地已安装的模型，无需手动逐一配置。
 
 ## 5. 成本监控与优化
 
@@ -168,12 +191,16 @@ openclaw usage --by-skill
 
 ### 5.2 设置预算上限
 
-```yaml
-llm:
-  budget:
-    daily: 5.00      # 每日上限 $5
-    monthly: 100.00   # 每月上限 $100
-    alert_at: 80      # 达到 80% 时告警
+```json
+{
+  "llm": {
+    "budget": {
+      "daily": 5.00,
+      "monthly": 100.00,
+      "alert_at": 80
+    }
+  }
+}
 ```
 
 ### 5.3 成本优化技巧

@@ -205,6 +205,8 @@ clawhub install hackernews    # 可选：技术新闻
 **17:00** - 生成今日工作总结
 **22:00** - 习惯追踪打卡提醒
 
+OpenClaw 的主动循环约每 30 分钟检查一次待办工作，记忆以本地 Markdown 文件形式存储在 `~/.openclaw/workspace` 目录下。
+
 这就是 OpenClaw 作为个人助理的完整形态——不是被动等你提问，而是主动帮你管理一天的工作和生活。
 
 ---

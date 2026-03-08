@@ -312,12 +312,15 @@ openclaw gateway restart
 
 **Q: 提示"API key not found"怎么办？**
 
-A: 编辑配置文件 `~/.openclaw/config.yaml`，在对应的提供商下添加 API 密钥。例如：
+A: 编辑配置文件 `openclaw.json`，在对应的提供商下添加 API 密钥。例如：
 
-```yaml
-llm:
-  provider: claude
-  api_key: sk-ant-xxxxx
+```json
+{
+  "llm": {
+    "provider": "anthropic",
+    "apiKey": "sk-ant-xxxxx"
+  }
+}
 ```
 
 **Q: Web 面板无法访问？**
