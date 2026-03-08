@@ -565,7 +565,7 @@ openclaw config set channels.telegram.customKeyboard '[["/status","/logs"],["/ba
 **定期检查日志**：OpenClaw 会记录所有通过移动端执行的操作。定期查看日志，确保没有异常活动：
 
 ```bash
-openclaw logs --channel telegram --last 100
+openclaw logs --follow
 ```
 
 **不要在公共网络下暴露端口**：如果你的 OpenClaw 运行在公网服务器上，务必配置防火墙，只允许来自飞书或 Telegram 官方服务器的请求。

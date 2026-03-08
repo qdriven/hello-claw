@@ -51,7 +51,7 @@
 
 **技能市场：**
 
-- **ClawHub Skills Registry**: <https://www.clawhub.com> - 官方 Skills 注册中心，13729+ 可用技能
+- **ClawHub Skills Registry**: <https://clawhub.ai> - 官方 Skills 注册中心，13729+ 可用技能
 - **ClawHub AI**: <https://clawhub.ai> - Skills 搜索与发现平台
 
 **社区讨论：**

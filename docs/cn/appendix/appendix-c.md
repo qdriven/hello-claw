@@ -24,9 +24,9 @@ OpenClaw 的技能（Skill）系统是其核心扩展机制。本附录提供基
 
 OpenClaw 支持三种类型的技能：
 
-1. **Bundled Skills（捆绑技能）**：随 OpenClaw 一起发布的内置技能
-2. **Managed Skills（托管技能）**：通过 ClawHub 安装和管理的技能
-3. **Workspace Skills（工作空间技能）**：用户在工作空间中自定义的技能
+1. **Bundled Skills（捆绑技能）**：随 OpenClaw 安装的内置技能（优先级最低）
+2. **Managed Skills（托管技能）**：安装在 `~/.openclaw/skills` 的技能
+3. **Workspace Skills（工作空间技能）**：工作空间目录下 `<workspace>/skills/` 的技能（优先级最高）
 
 ---
 
@@ -129,55 +129,47 @@ npx clawhub
 ~/.openclaw/workspace/
 └── skills/
     ├── my-skill/
-    │   ├── skill.yaml      # 技能元数据
-│   ├── README.md       # 技能说明
-│   └── ...             # 其他文件
+    │   ├── SKILL.md       # 技能定义文件（YAML frontmatter + Markdown 指令）
+    │   └── ...             # 其他辅助文件
 ```
 
-### skill.yaml 结构
+### SKILL.md 结构
 
-基于社区实践，skill.yaml 通常包含：
+每个技能是一个包含 `SKILL.md` 文件的目录。`SKILL.md` 使用 YAML frontmatter 声明元数据，后面跟 Markdown 格式的指令：
 
-```yaml
+````markdown
+---
 name: my-skill
-displayName: 我的技能
-description: 这是一个示例技能
-version: 1.0.0
-author: Your Name
-license: MIT
+description: 技能描述（这是最重要的字段，决定 AI 何时调用此技能）
+user-invocable: true
+disable-model-invocation: false
+metadata:
+  openclaw:
+    requires:
+      env:
+        - MY_API_KEY
+      bins:
+        - curl
+---
 
-# 技能触发器（关键词自动激活）
-triggers:
-  - "关键词1"
-  - "关键词2"
+# 技能指令
 
-# 技能配置
-co nfig:
-  apiKey:
-    type: string
-    description: API 密钥
-    required: true
-  timeout:
-    type: number
-    description: 超时时间（秒）
-    default: 30
+这里写 Markdown 格式的技能指令，告诉 AI 如何使用这个技能。
 
-# 工具定义
-tools:
-  - name: my_tool
-    description: 工具描述
-    parameters:
-      type: object
-      properties:
-        param1:
-          type: string
-          description: 参数1
-        param2:
-          type: number
-          description: 参数2
-      required:
-        - param1
-```
+可以用 `{baseDir}` 引用技能所在目录。
+````
+
+**YAML Frontmatter 字段说明：**
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `name` | 是 | 技能标识符 |
+| `description` | 是 | 技能描述，AI 根据此决定何时调用 |
+| `user-invocable` | 否 | 是否可通过斜杠命令调用（默认 true） |
+| `disable-model-invocation` | 否 | 是否从模型提示中排除（默认 false） |
+| `metadata.openclaw.requires.env` | 否 | 需要的环境变量 |
+| `metadata.openclaw.requires.bins` | 否 | 需要的系统命令 |
+| `metadata.openclaw.requires.config` | 否 | 需要的配置路径 |
 
 ### 技能开发步骤
 
@@ -187,17 +179,16 @@ tools:
    cd ~/.openclaw/workspace/skills/my-skill
    ```
 
-2. **创建 skill.yaml**
-   ```yaml
+2. **创建 SKILL.md**
+   ```markdown
+   ---
    name: hello-world
-   displayName: Hello World
-   version: 1.0.0
-   description: 一个简单的示例技能
-   author: Your Name
-   
-   triggers:
-     - "hello"
-     - "hi"
+   description: 一个简单的示例技能，当用户说 hello 或 hi 时触发
+   ---
+
+   # Hello World 技能
+
+   当用户打招呼时，回复一段友好的欢迎语。
    ```
 
 3. **验证技能**
@@ -229,7 +220,7 @@ tools:
 ### 3. 配置安全
 
 - 使用 SecretRef 存储敏感信息
-- 不要将 API 密钥硬编码在 skill.yaml 中
+- 不要将 API 密钥硬编码在 SKILL.md 中
 - 使用环境变量或文件存储凭证
 
 ### 4. 错误处理
@@ -241,9 +232,8 @@ tools:
 ### 5. 文档编写
 
 每个技能应包含：
-- README.md：说明技能功能和使用方法
-- skill.yaml：完整的元数据和配置定义
-- 示例：展示如何使用技能
+- SKILL.md：技能定义文件（frontmatter 元数据 + Markdown 指令）
+- 可选的辅助文件（脚本、配置模板等）
 
 ---
 
@@ -270,7 +260,7 @@ openclaw skills list --built-in
 openclaw plugins list
 
 # 安装插件
-openplaw plugins install <path|.tgz|npm-spec>
+openclaw plugins install <path|.tgz|npm-spec>
 
 # 启用/禁用插件
 openclaw plugins enable <id>
@@ -290,13 +280,12 @@ openclaw plugins doctor
    ```bash
    # 确保包含所有必要文件
    my-skill/
-   ├── skill.yaml
-   ├── README.md
+   ├── SKILL.md
    └── ...
    ```
 
 2. **提交到 ClawHub**
-   - 访问 [clawhub.com](https://clawhub.com)
+   - 访问 [clawhub.ai](https://clawhub.ai)
    - 按照提交指南上传技能
 
 ### 本地共享
@@ -352,7 +341,7 @@ chmod 755 ~/.openclaw/workspace/skills/my-skill/
 
 - [OpenClaw 官方文档](https://docs.openclaw.ai)
 - [OpenClaw GitHub](https://github.com/openclaw/openclaw)
-- [ClawHub](https://clawhub.com)
+- [ClawHub](https://clawhub.ai)
 
 ### 社区资源
 
@@ -365,13 +354,11 @@ chmod 755 ~/.openclaw/workspace/skills/my-skill/
 
 开发技能前，确保完成以下检查：
 
-- [ ] skill.yaml 元数据完整（name, version, description, author）
-- [ ] README.md 文档清晰
-- [ ] 触发器定义明确
-- [ ] 配置项有类型和默认值
-- [ ] 敏感信息使用 SecretRef
+- [ ] SKILL.md frontmatter 包含 name 和 description
+- [ ] description 清晰描述触发条件
+- [ ] 环境变量需求在 metadata.openclaw.requires.env 中声明
+- [ ] 敏感信息使用 SecretRef 或环境变量
 - [ ] 错误处理完善
-- [ ] 版本号遵循语义化版本
 - [ ] 在本地测试通过
 
 ---

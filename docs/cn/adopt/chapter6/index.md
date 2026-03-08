@@ -129,7 +129,52 @@ journalctl -u openclaw -f         # 查看实时日志
 
 Docker 提供了更好的隔离性和可移植性。
 
-### 4.1 使用官方镜像
+### 4.1 使用官方安装脚本（推荐）
+
+OpenClaw 官方提供了 `docker-setup.sh` 一键部署脚本，这是最简单的 Docker 部署方式：
+
+```bash
+# 克隆官方仓库
+git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+
+# 使用预构建镜像运行（推荐，省去编译时间）
+export OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest"
+./docker-setup.sh
+```
+
+脚本会自动完成以下步骤：
+1. 拉取或构建 Docker 镜像
+2. 运行初始化配置向导
+3. 生成访问令牌（Token）
+4. 启动 Gateway 服务
+
+完成后访问 `http://127.0.0.1:18789/` 打开控制台，在设置中粘贴脚本输出的 Token 即可使用。
+
+<details>
+<summary>展开：启用沙箱模式（Docker-in-Docker）</summary>
+
+如果你希望 AI 执行的命令在隔离环境中运行（更安全），可以启用沙箱模式：
+
+```bash
+export OPENCLAW_SANDBOX=1
+export OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest"
+./docker-setup.sh
+```
+
+> **什么是沙箱？** 沙箱是一种安全机制，让 AI 执行的命令在一个独立的容器中运行，即使出错也不会影响你的主系统。
+
+如果你使用 rootless Docker（非 root 用户运行 Docker），还需要指定 socket 路径：
+
+```bash
+export OPENCLAW_SANDBOX=1
+export OPENCLAW_DOCKER_SOCKET=/run/user/1000/docker.sock
+./docker-setup.sh
+```
+
+</details>
+
+### 4.2 使用官方镜像
 
 <!-- TODO: 补充 Docker 部署流程截图 -->
 
@@ -155,7 +200,7 @@ docker run -d \
 > chown -R 1000:1000 ~/openclaw-data
 ```
 
-### 4.2 使用 Docker Compose
+### 4.3 使用 Docker Compose
 
 ```yaml
 # docker-compose.yml
@@ -188,7 +233,7 @@ docker compose up -d
 docker compose logs -f
 ```
 
-### 4.3 更新版本
+### 4.4 更新版本
 
 ```bash
 docker compose pull
@@ -225,11 +270,11 @@ sudo ufw enable
 ### 5.4 日志审计
 
 ```bash
-# 查看 OpenClaw 操作日志
-openclaw logs --last 100
+# 查看 OpenClaw 最近日志
+openclaw logs --limit 100
 
-# 监控异常操作
-openclaw logs --level error --last 50
+# 实时监控日志
+openclaw logs --follow
 ```
 
 </details>

@@ -47,17 +47,17 @@
 ### 2.1 查看日志
 
 ```bash
-# 查看实时日志
-openclaw logs -f
+# 查看实时日志（持续输出）
+openclaw logs --follow
 
-# 查看最近 100 条错误
-openclaw logs --level error --last 100
+# 查看最近 100 条日志
+openclaw logs --limit 100
 
-# 查看特定渠道的日志
-openclaw logs --channel telegram --last 50
+# 以 JSON 格式输出（方便用 jq 等工具过滤）
+openclaw logs --limit 100 --json
 
-# 查看特定技能的调用日志
-openclaw logs --skill weather --last 20
+# 纯文本输出（无颜色）
+openclaw logs --limit 50 --plain
 ```
 
 ### 2.2 日志级别

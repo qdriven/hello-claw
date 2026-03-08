@@ -160,7 +160,7 @@ openclaw gateway restart
 
 # 查看日志
 openclaw logs
-openclaw logs --lines 100
+openclaw logs --limit 100
 ```
 
 ### 网关健康检查
@@ -408,7 +408,7 @@ openclaw channels status --probe
 
 ```bash
 openclaw channels logs
-openclaw channels logs --channel <name> --lines 200
+openclaw channels logs --channel <name> --limit 200
 ```
 
 ### 添加渠道

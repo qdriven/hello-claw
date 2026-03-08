@@ -39,7 +39,7 @@ openclaw cron edit <jobId>
 openclaw cron list
 
 # 删除任务
-openclaw cron delete <jobId>
+openclaw cron rm <jobId>
 ```
 
 ## 3. 实战案例
@@ -88,22 +88,20 @@ OpenClaw 会创建一个独立会话的定时任务，每天准时执行。
 
 ## 4. 高级配置
 
-> 以下配置写在工作区根目录的 `openclaw.json` 的 `cron` 字段中。完整结构示例：
+> **定时任务的两层配置**：
 >
-> ```json
-> {
->   "cron": {
->     "jobs": [
->       {
->         "name": "morning_brief",
->         "schedule": "0 8 * * *",
->         "prompt": "生成今日简报并发送",
->         "enabled": true
->       }
->     ]
+> - **全局设置**在 `openclaw.json` 的 `cron` 字段中，控制是否启用、最大并发数等：
+>   ```json
+>   {
+>     "cron": {
+>       "enabled": true,
+>       "maxConcurrentRuns": 2
+>     }
 >   }
-> }
-> ```
+>   ```
+> - **具体任务**通过 CLI（`openclaw cron add`）或对话创建，由 Gateway 存储在 `~/.openclaw/cron/jobs.json` 中。手动编辑该文件需要先停止 Gateway。
+>
+> 下面的 JSON 示例展示的是 `jobs.json` 中的任务定义格式，仅供理解参考，**推荐通过对话或 CLI 创建任务**。
 
 <details>
 <summary>展开：高级配置（条件执行、任务链、环境变量、错误处理）</summary>
@@ -113,7 +111,7 @@ OpenClaw 会创建一个独立会话的定时任务，每天准时执行。
 有时你希望任务只在特定条件下执行。可以在 prompt 中添加判断逻辑：
 
 ```json
-// openclaw.json 中的 cron 配置
+// jobs.json 任务定义格式（推荐通过 CLI 或对话创建）
 {
   "cron": {
     "jobs": [
@@ -289,13 +287,12 @@ disk_alert      */30 * * * *    enabled   2026-03-06 09:00   2026-03-06 09:30
 weekly_report   0 17 * * 5      enabled   2026-03-01 17:00   2026-03-08 17:00
 ```
 
-查看某个任务的详细信息：
+查看任务的执行历史：
 
 ```bash
-openclaw cron info morning_brief
+# 查看任务的执行历史
+openclaw cron runs
 ```
-
-会显示任务的完整配置、执行历史、平均耗时、成功率等统计信息。
 
 ### 5.2 手动触发
 
@@ -306,12 +303,6 @@ openclaw cron run morning_brief
 ```
 
 OpenClaw 会立即执行这个任务，并实时显示执行过程和结果。这对于调试任务配置非常有用。
-
-你还可以使用 `--dry-run` 参数模拟执行，查看任务会做什么但不实际执行：
-
-```bash
-openclaw cron run morning_brief --dry-run
-```
 
 ### 5.3 暂停和恢复
 
@@ -334,10 +325,10 @@ openclaw cron enable morning_brief
 查看任务的执行历史：
 
 ```bash
-openclaw cron logs morning_brief --last 10
+openclaw cron runs
 ```
 
-会显示最近 10 次执行的详细日志，包括开始时间、结束时间、执行结果、错误信息等。如果任务执行失败，日志会包含完整的错误堆栈，方便排查问题。
+会显示所有定时任务的执行记录，包括开始时间、状态和结果。如果需要更详细的日志，可以使用 `openclaw logs --follow` 查看实时网关日志。
 
 <details>
 <summary>展开：更多实战案例（服务器监控、自动化测试、数据同步、内容发布、智能提醒）</summary>
@@ -347,7 +338,7 @@ openclaw cron logs morning_brief --last 10
 ### 6.1 服务器监控
 
 ```json
-// openclaw.json 中的 cron 配置
+// jobs.json 任务定义格式（推荐通过 CLI 或对话创建）
 {
   "cron": {
     "jobs": [
