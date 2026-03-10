@@ -15,6 +15,9 @@ hero:
     - theme: alt
       text: 深入开发
       link: /cn/build/
+    - theme: alt
+      text: GitHub
+      link: https://github.com/datawhalechina/hello-claw
 
 features:
   - title: 🦞 领养 Claw（使用篇）
