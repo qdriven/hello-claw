@@ -15,7 +15,7 @@
           @mouseenter="isHovered = true"
           @mouseleave="isHovered = false"
           @click="triggerHappyJump"
-          :class="['mb-6 drop-shadow-[0_0_30px_rgba(255,77,77,0.35)] cursor-pointer lobster-anim', { 'hovered': isHovered, 'happy': isHappy }]"
+          :class="['relative mb-6 drop-shadow-[0_0_30px_rgba(255,77,77,0.35)] cursor-pointer lobster-anim', { 'hovered': isHovered, 'happy': isHappy, 'dream-party': isDreamParty }]"
         >
           <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 md:w-40 md:h-40">
             <!-- Lobster Claw Silhouette -->
@@ -137,6 +137,82 @@
               </linearGradient>
             </defs>
           </svg>
+          <div v-if="isDreamParty" class="dream-notes">
+            <span
+              v-for="note in dreamNotes"
+              :key="note.id"
+              class="dream-note"
+              :style="{ left: note.left, top: note.top, animationDelay: note.delay, animationDuration: note.duration }"
+            >
+              {{ note.char }}
+            </span>
+          </div>
+          <div v-if="isDreamParty" class="dream-clones" aria-hidden="true">
+            <div
+              v-for="clone in dreamClones"
+              :key="clone.id"
+              :class="['dream-clone', `clone-role-${clone.role}`]"
+              :style="{ '--fromx': `${clone.fromX}px`, '--fromy': `${clone.fromY}px`, '--tox': `${clone.toX}px`, '--toy': `${clone.toY}px`, '--walk1': `${clone.walk1}px`, '--walk2': `${clone.walk2}px`, '--walk3': `${clone.walk3}px`, '--hue': `${clone.hue}deg`, '--delay': clone.delay, '--unfold': clone.duration }"
+            >
+              <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="clone-lobster">
+                <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z" fill="url(#clone-lobster-gradient)"></path>
+                <path class="clone-claw-left" d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z" fill="url(#clone-lobster-gradient)"></path>
+                <path class="clone-claw-right" d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z" fill="url(#clone-lobster-gradient)"></path>
+                <circle cx="45" cy="35" r="6" fill="#050810"></circle>
+                <circle cx="75" cy="35" r="6" fill="#050810"></circle>
+                <circle :cx="46 + eyeOffsetX * 0.85" :cy="34 + eyeOffsetY * 0.85" r="2" fill="#00e5cc"></circle>
+                <circle :cx="76 + eyeOffsetX * 0.85" :cy="34 + eyeOffsetY * 0.85" r="2" fill="#00e5cc"></circle>
+                <g v-if="clone.role === 'singer'" class="clone-face face-singer">
+                  <ellipse cx="60" cy="49" rx="4.5" ry="5.6" fill="#ffd6e8" />
+                  <ellipse cx="60" cy="49" rx="2.4" ry="3.1" fill="#ff8fb8" />
+                  <path class="kiss-heart" d="M67 42 C67 39.8 69.8 39.4 70.6 41 C71.4 39.4 74.2 39.8 74.2 42 C74.2 43.5 72.8 44.6 70.6 46.3 C68.4 44.6 67 43.5 67 42 Z" fill="#ff8db8" />
+                </g>
+                <g v-if="clone.role === 'guitar'" class="clone-face face-guitar">
+                  <path d="M50 47 Q60 56 70 47" stroke="#ffe8e8" stroke-width="2.2" stroke-linecap="round" />
+                </g>
+                <g v-if="clone.role === 'drummer'" class="clone-face face-drummer">
+                  <path d="M52 48 Q60 57 68 48" stroke="#ffe8e8" stroke-width="2.1" stroke-linecap="round" />
+                </g>
+                <g v-if="clone.role === 'keys'" class="clone-face face-keys">
+                  <path d="M51 48 Q60 56 69 48" stroke="#ffe8e8" stroke-width="2.1" stroke-linecap="round" />
+                  <circle cx="66" cy="44.5" r="1.9" fill="#ffd1e2" />
+                </g>
+                <g v-if="clone.role === 'singer'" class="instrument instrument-mic">
+                  <line x1="91" y1="53" x2="76" y2="64" stroke="#d9d9d9" stroke-width="2.4" stroke-linecap="round" />
+                  <ellipse cx="93" cy="51" rx="5.2" ry="4.2" fill="#cfd5de" />
+                  <line x1="93" y1="47.5" x2="93" y2="54.5" stroke="#8e98a9" stroke-width="1.2" />
+                </g>
+                <g v-if="clone.role === 'guitar'" class="instrument instrument-guitar">
+                  <ellipse cx="75" cy="66" rx="9.2" ry="7.6" fill="#c56b2f" />
+                  <circle cx="75.5" cy="66" r="2.4" fill="#5b2a12" />
+                  <rect x="54" y="61.5" width="23" height="2.8" rx="1.2" fill="#9d5a2b" />
+                  <line x1="57" y1="62" x2="74" y2="62" stroke="#f5d8a8" stroke-width="0.9" />
+                  <line x1="57" y1="63" x2="74" y2="63" stroke="#f5d8a8" stroke-width="0.9" />
+                </g>
+                <g v-if="clone.role === 'drummer'" class="instrument instrument-drum">
+                  <ellipse cx="74" cy="67" rx="10.5" ry="6.2" fill="#f6f7fb" />
+                  <ellipse cx="74" cy="67" rx="8.7" ry="4.4" fill="#f25f5c" />
+                  <line x1="62" y1="56" x2="70" y2="63" stroke="#d7b98e" stroke-width="2" stroke-linecap="round" />
+                  <line x1="86" y1="55" x2="78" y2="63" stroke="#d7b98e" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <g v-if="clone.role === 'keys'" class="instrument instrument-keys">
+                  <rect x="58" y="60" width="28" height="10.5" rx="2.5" fill="#23262e" />
+                  <rect x="60.3" y="61.8" width="3.3" height="7" rx="0.8" fill="#ffffff" />
+                  <rect x="64.2" y="61.8" width="3.3" height="7" rx="0.8" fill="#ffffff" />
+                  <rect x="68.1" y="61.8" width="3.3" height="7" rx="0.8" fill="#ffffff" />
+                  <rect x="72" y="61.8" width="3.3" height="7" rx="0.8" fill="#ffffff" />
+                  <rect x="75.9" y="61.8" width="3.3" height="7" rx="0.8" fill="#ffffff" />
+                  <rect x="79.8" y="61.8" width="3.3" height="7" rx="0.8" fill="#ffffff" />
+                </g>
+                <defs>
+                  <linearGradient id="clone-lobster-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff8c8c"></stop>
+                    <stop offset="100%" stop-color="#ff4d4d"></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
         </div>
 
         <h1 class="!text-5xl md:!text-7xl !leading-none font-bold !tracking-[0.25em] !mt-0 !mb-4 !pl-[0.25em]">
@@ -158,7 +234,7 @@
             <span class="story-line story-line-1"><span class="char-fade-1">一</span><span class="char-fade-2">个</span><span class="char-fade-3">不</span><span class="char-fade-4">起</span><span class="char-fade-5">眼</span><span class="char-fade-6">的</span><span class="char-fade-7">仓</span><span class="char-fade-8">库</span><span class="char-fade-9">里</span><span class="char-fade-10">，</span><span class="char-fade-10">龙</span><span class="char-fade-11">虾</span><span class="story-keyword story-born" @click="navigateTo('/cn/adopt/intro')" @mouseenter="hoveredKeyword = 'born'" @mouseleave="hoveredKeyword = ''"><span class="char-fade-12">诞</span><span class="char-fade-13">生</span></span><span class="char-fade-14">了</span><span class="char-fade-15">。</span></span><br>
             <span class="story-line story-line-2"><span class="story-keyword story-pick" @click="navigateTo('/cn/adopt/lobster-review')" @mouseenter="hoveredKeyword = 'pick'" @mouseleave="hoveredKeyword = ''"><span class="char-fade-5">选</span><span class="char-fade-6">一</span><span class="char-fade-7">只</span></span><span class="char-fade-8">，</span><span class="char-fade-9">送</span><span class="char-fade-10">它</span><span class="char-fade-11">上</span><span class="story-keyword story-school" @click="navigateTo('/cn/university/')" @mouseenter="hoveredKeyword = 'school'" @mouseleave="hoveredKeyword = ''"><span class="char-fade-12">学</span><span class="char-fade-13">堂</span></span><span class="char-fade-14">；</span><span class="school-cta" @click="navigateTo('/cn/university/')" @mouseenter="hoveredKeyword = 'school'" @mouseleave="hoveredKeyword = ''"><span class="school-cta-arrow">←</span><span>试试龙虾大学吧！</span></span></span><br>
             <span class="story-line story-line-3"><span class="char-fade-3">或</span><span class="char-fade-4">动</span><span class="char-fade-5">手</span><span class="char-fade-6">写</span><span class="char-fade-7">一</span><span class="char-fade-8">只</span><span class="story-keyword story-undefined" @click="navigateTo('/cn/build/')" @mouseenter="hoveredKeyword = 'undefined'" @mouseleave="hoveredKeyword = ''"><span class="char-fade-9">不</span><span class="char-fade-10">被</span><span class="char-fade-11">定</span><span class="char-fade-12">义</span></span><span class="char-fade-13">的</span><span class="char-fade-14">龙</span><span class="char-fade-15">虾</span><span class="char-fade-16">。</span></span><br>
-            <span class="story-line story-line-4"><span class="char-fade-13">它</span><span class="char-fade-13">的</span><span class="char-fade-14">梦</span><span class="char-fade-15">想</span><span class="char-fade-16">，</span><span class="char-fade-17">从</span><span class="char-fade-18">第</span><span class="char-fade-18">一</span><span class="char-fade-19">天</span><span class="char-fade-19">起</span><span class="char-fade-20">就</span><span class="char-fade-20">很</span><span class="char-fade-20">大</span><span class="char-fade-20">:</span><span class="char-fade-20">)</span></span>
+            <span class="story-line story-line-4" @mouseenter="startDreamParty" @mouseleave="stopDreamParty"><span class="char-fade-13">它</span><span class="char-fade-13">的</span><span class="char-fade-14">梦</span><span class="char-fade-15">想</span><span class="char-fade-16">，</span><span class="char-fade-17">从</span><span class="char-fade-18">第</span><span class="char-fade-18">一</span><span class="char-fade-19">天</span><span class="char-fade-19">起</span><span class="char-fade-20">就</span><span class="char-fade-20">很</span><span class="char-fade-20">大</span><span class="char-fade-20">:</span><span class="char-fade-20">)</span></span>
           </p>
           <!-- 提示文字 - 5秒后渐隐显示 或 悬停时显示跳转目的地 -->
           <p :class="['hint-text text-sm !mt-8', { 'hint-visible': showHint || hoveredKeyword }]">
@@ -660,9 +736,25 @@ const isLobsterUniversity = computed(() => {
 
 const isHovered = ref(false)
 const isHappy = ref(false)
+const isDreamParty = ref(false)
 const copied = ref(false)
 const eyeOffsetX = ref(0)
 const eyeOffsetY = ref(0)
+
+const dreamClones = [
+  { id: 'clone-1', role: 'singer', fromX: -34, fromY: 10, toX: -360, toY: 10, walk1: -9, walk2: 6, walk3: -4, hue: -12, delay: '0s', duration: '5.9s' },
+  { id: 'clone-2', role: 'guitar', fromX: -24, fromY: 10, toX: -180, toY: 10, walk1: 7, walk2: -8, walk3: 5, hue: 10, delay: '0.2s', duration: '5.6s' },
+  { id: 'clone-3', role: 'drummer', fromX: 24, fromY: 10, toX: 180, toY: 10, walk1: -6, walk2: 8, walk3: -5, hue: -16, delay: '0.14s', duration: '5.7s' },
+  { id: 'clone-4', role: 'keys', fromX: 34, fromY: 10, toX: 360, toY: 10, walk1: 8, walk2: -7, walk3: 6, hue: 16, delay: '0.34s', duration: '6s' },
+]
+
+const dreamNotes = [
+  { id: 'note-1', char: '♫', left: '14%', top: '16%', delay: '0s', duration: '1.45s' },
+  { id: 'note-2', char: '♪', left: '24%', top: '2%', delay: '0.22s', duration: '1.6s' },
+  { id: 'note-3', char: '♬', left: '76%', top: '10%', delay: '0.12s', duration: '1.4s' },
+  { id: 'note-4', char: '♪', left: '90%', top: '24%', delay: '0.34s', duration: '1.65s' },
+  { id: 'note-5', char: '♫', left: '8%', top: '68%', delay: '0.45s', duration: '1.5s' },
+]
 
 const quickStartMode = ref('powershell')
 
@@ -903,6 +995,14 @@ const triggerHappyJump = () => {
   })
 }
 
+const startDreamParty = () => {
+  isDreamParty.value = true
+}
+
+const stopDreamParty = () => {
+  isDreamParty.value = false
+}
+
 const updateEyeTracking = (event) => {
   const maxOffset = 1.8
   const normalizedX = (event.clientX / window.innerWidth - 0.5) * 2
@@ -1010,6 +1110,182 @@ const vFadeIn = {
 }
 .lobster-anim.happy {
   animation: happy-bounce 0.7s ease-out;
+}
+.lobster-anim.dream-party {
+  animation: float 4s infinite ease-in-out, dream-dance 2.1s ease-in-out infinite;
+}
+.lobster-anim.dream-party .claw-left {
+  animation: dream-limb-left 1.1s ease-in-out infinite;
+}
+.lobster-anim.dream-party .claw-right {
+  animation: dream-limb-right 1.1s ease-in-out infinite;
+}
+.lobster-anim.dream-party .claw-body {
+  animation: dream-body-groove 1.6s ease-in-out infinite;
+}
+.dream-notes {
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+}
+.dream-note {
+  position: absolute;
+  color: rgba(255, 214, 102, 0.95);
+  font-size: 1.1rem;
+  text-shadow: 0 0 16px rgba(255, 214, 102, 0.6);
+  animation-name: dream-note-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.dream-clones {
+  position: absolute;
+  inset: -48px -460px;
+  pointer-events: none;
+}
+.dream-clone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  opacity: 0;
+  transform-origin: center center;
+  animation-name: dream-clone-unfold, dream-clone-stroll;
+  animation-duration: var(--unfold), 3.2s;
+  animation-delay: var(--delay), calc(var(--delay) + var(--unfold));
+  animation-timing-function: ease-out, ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: forwards, both;
+}
+.clone-lobster {
+  width: 128px;
+  height: 128px;
+  filter: hue-rotate(var(--hue)) drop-shadow(0 0 12px rgba(255, 107, 107, 0.45));
+}
+.clone-claw-left { transform-origin: 25px 55px; }
+.clone-claw-right { transform-origin: 95px 55px; }
+.instrument { transform-origin: 74px 63px; }
+.kiss-heart {
+  transform-origin: 70.6px 42px;
+  animation: kiss-heart-pop 1.1s ease-in-out infinite;
+}
+.clone-role-singer .instrument-mic {
+  animation: mic-sing 0.65s ease-in-out infinite;
+}
+.clone-role-singer .clone-claw-left {
+  animation: singer-claw-left 0.65s ease-in-out infinite;
+}
+.clone-role-singer .clone-claw-right {
+  animation: singer-claw-right 0.65s ease-in-out infinite;
+}
+.clone-role-guitar .instrument-guitar {
+  animation: guitar-strum 0.52s ease-in-out infinite;
+}
+.clone-role-guitar .clone-claw-left {
+  animation: guitar-claw-left 0.52s ease-in-out infinite;
+}
+.clone-role-guitar .clone-claw-right {
+  animation: guitar-claw-right 0.52s ease-in-out infinite;
+}
+.clone-role-drummer .instrument-drum {
+  animation: drum-beat 0.44s ease-in-out infinite;
+}
+.clone-role-drummer .clone-claw-left,
+.clone-role-drummer .clone-claw-right {
+  animation: drum-claw 0.44s ease-in-out infinite;
+}
+.clone-role-keys .instrument-keys {
+  animation: keys-play 0.58s ease-in-out infinite;
+}
+.clone-role-keys .clone-claw-left,
+.clone-role-keys .clone-claw-right {
+  animation: keys-claw 0.58s ease-in-out infinite;
+}
+@media (min-width: 768px) {
+  .clone-lobster {
+    width: 160px;
+    height: 160px;
+  }
+}
+@keyframes dream-dance {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  20% { transform: translateY(-4px) rotate(2.4deg) scale(1.01); }
+  40% { transform: translateY(-1px) rotate(-2.8deg) scale(0.995); }
+  60% { transform: translateY(-5px) rotate(2.6deg) scale(1.015); }
+  80% { transform: translateY(-1px) rotate(-2deg) scale(1); }
+}
+@keyframes dream-limb-left {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-16deg); }
+  50% { transform: rotate(4deg); }
+  75% { transform: rotate(-12deg); }
+}
+@keyframes dream-limb-right {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(18deg); }
+  50% { transform: rotate(-5deg); }
+  75% { transform: rotate(13deg); }
+}
+@keyframes dream-body-groove {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+@keyframes dream-note-float {
+  0%, 100% { opacity: 0.45; transform: translateY(4px) scale(0.9); }
+  50% { opacity: 1; transform: translateY(-8px) scale(1.08); }
+}
+@keyframes mic-sing {
+  0%, 100% { transform: rotate(-16deg) translateY(0); }
+  50% { transform: rotate(-4deg) translateY(-1px); }
+}
+@keyframes guitar-strum {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  40% { transform: rotate(-12deg) translateY(-1px); }
+  70% { transform: rotate(10deg) translateY(1px); }
+}
+@keyframes singer-claw-right {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(21deg); }
+}
+@keyframes singer-claw-left {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-10deg); }
+}
+@keyframes guitar-claw-left {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-14deg); }
+}
+@keyframes guitar-claw-right {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(24deg); }
+}
+@keyframes drum-beat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes drum-claw {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(19deg); }
+}
+@keyframes keys-play {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+@keyframes keys-claw {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-14deg); }
+}
+@keyframes dream-clone-unfold {
+  0% { opacity: 0; transform: translate(calc(-50% + var(--fromx)), calc(-50% + var(--fromy))); }
+  100% { opacity: 1; transform: translate(calc(-50% + var(--tox)), calc(-50% + var(--toy))); }
+}
+@keyframes dream-clone-stroll {
+  0%, 100% { transform: translate(calc(-50% + var(--tox)), calc(-50% + var(--toy))); }
+  30% { transform: translate(calc(-50% + var(--tox) + var(--walk1)), calc(-50% + var(--toy))); }
+  62% { transform: translate(calc(-50% + var(--tox) + var(--walk2)), calc(-50% + var(--toy))); }
+  84% { transform: translate(calc(-50% + var(--tox) + var(--walk3)), calc(-50% + var(--toy))); }
+}
+@keyframes kiss-heart-pop {
+  0%, 100% { opacity: 0.75; transform: scale(0.9) translate(0, 0); }
+  50% { opacity: 1; transform: scale(1.15) translate(0.8px, -1.2px); }
 }
 .lobster-smile {
   opacity: 0;
