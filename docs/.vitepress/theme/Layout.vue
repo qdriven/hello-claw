@@ -862,7 +862,7 @@ const quickLinks = [
   { icon: '🎓', text: '龙虾大学', link: '/cn/university/' },
   { icon: '📱', text: '领养：移动端接入', link: '/cn/adopt/chapter3' },
   { icon: '🛠️', text: '构建：写在开头', link: '/cn/build/' },
-  { icon: '📚', text: '附录：命令速查表', link: '/cn/appendix/appendix-a' },
+  { icon: '📚', text: '附录：社区之声', link: '/cn/appendix/appendix-b' },
   { icon: '🐙', text: 'GitHub', link: 'https://github.com/datawhalechina/hello-claw', external: true },
 ]
 
