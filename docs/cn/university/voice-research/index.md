@@ -32,7 +32,7 @@
 
 ### 核心架构
 
-![语音调研工作流](./images/voice-research-workflow.png)
+<!-- ![语音调研工作流](./images/voice-research-workflow.png) -->
 
 ```mermaid
 flowchart TB
