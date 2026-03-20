@@ -205,8 +205,6 @@ For readers who want to drive Agent deployment in enterprises, it's recommended 
 
 From community discussions and industry trends, four parallel evolution paths are visible:
 
-![Hundred Shrimps Battle](./images/百虾大战.jpg)
-
 ```mermaid
 flowchart TB
 

@@ -154,6 +154,7 @@ OpenClaw 的爆发催生了一个庞大的"龙虾生态"——从开源框架到
 | [**WorkBuddy**](https://workbuddy.tencent.com) / [**QClaw**](https://claw.guanjia.qq.com) | 腾讯 | 本地 + 企微 Web | Hunyuan + 多模型 | 20+ 预置技能包 | — | ✅ 5,000 欢迎积分 | 免费 | 微信/QQ/企微/钉钉/飞书 | 唯一支持微信 | 微信/企业用户 |
 | [**DuClaw**](https://cloud.baidu.com/product/duclaw) | 百度 | Web 浏览器 | 文心/DeepSeek/Kimi-K2.5/GLM-5/MiniMax-M2.5 | 百度搜索/百科/学术等预置 Skills | — | ✅ 限时优惠 | ¥17.8/月 | — | 零部署浏览器直用，多模型切换 | 不想管服务器的轻度用户 |
 | [**AstronClaw**](https://astronclaw.com) | 科大讯飞 | Web 浏览器 | 星火 X2/MiniMax-M2.5/Kimi-K2.5/GLM-5 | 10,000+ Skills | — | ✅ 限时优惠 | ¥16.8/月 | 企微/钉钉/飞书 | 云端沙箱隔离，一键部署 | 讯飞模型生态用户 |
+| [**PineClaw**](https://pineclaw.com) | Pine AI | API/SDK + OpenClaw 插件 | — | OpenClaw 插件 + ClawHub 技能 + MCP 服务器 | — | — | — | — | AI 语音电话代理，自动拨打客服电话、账单议价、取消订阅，93% 成功率 | 需要电话自动化的用户 |
 
 ---
 
@@ -254,6 +255,8 @@ OpenClaw 的爆发催生了一个庞大的"龙虾生态"——从开源框架到
 ---
 
 ## 9. 百虾大战：国内大厂全景图
+
+![百虾大战](./images/百虾大战.jpg)
 
 2026 年初，OpenClaw 在国内引发了一场"百虾大战"——20+ 家科技公司迅速跟进，推出各自的类 Claw 产品或部署方案。
 

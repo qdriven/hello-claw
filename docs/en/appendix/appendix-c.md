@@ -154,6 +154,7 @@ Don't want to manage servers? The following managed services let you register an
 | [**WorkBuddy**](https://workbuddy.tencent.com) / [**QClaw**](https://claw.guanjia.qq.com) | Tencent | Local + WeCom Web | Hunyuan + multiple models | 20+ pre-built skill packs | — | ✅ 5,000 welcome credits | Free | WeChat/QQ/WeCom/DingTalk/Feishu | Only solution supporting WeChat | WeChat / enterprise users |
 | [**DuClaw**](https://cloud.baidu.com/product/duclaw) | Baidu | Web browser | ERNIE / DeepSeek / Kimi-K2.5 / GLM-5 / MiniMax-M2.5 | Pre-built Skills incl. Baidu Search / Baike / academic | — | ✅ Limited-time offer | ¥17.8/month | — | Zero deployment, browser-ready, multi-model switching | Light users who don't want to manage servers |
 | [**AstronClaw**](https://astronclaw.com) | iFlytek | Web browser | Spark X2 / MiniMax-M2.5 / Kimi-K2.5 / GLM-5 | 10,000+ Skills | — | ✅ Limited-time offer | ¥16.8/month | WeCom/DingTalk/Feishu | Cloud sandbox isolation, one-click deployment | iFlytek model ecosystem users |
+| [**PineClaw**](https://pineclaw.com) | Pine AI | API/SDK + OpenClaw plugins | — | OpenClaw plugins + ClawHub skills + MCP servers | — | — | — | — | AI voice call agent: auto-dials customer service, negotiates bills, cancels subscriptions, 93% success rate | Users needing phone call automation |
 
 ---
 
@@ -254,6 +255,8 @@ The following projects each have a distinct focus — minimalist design, securit
 ---
 
 ## 9. The Hundred-Shrimp Battle: A Panorama of Chinese Tech Giants
+
+![The Hundred-Shrimp Battle](./images/百虾大战.jpg)
 
 In early 2026, OpenClaw sparked a "Hundred-Shrimp Battle" in China — 20+ tech companies quickly followed suit, launching their own Claw-like products or deployment solutions.
 
