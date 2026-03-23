@@ -257,7 +257,21 @@ openclaw logs --limit 50 --plain | openclaw agent --message "Any anomalies?"
 
 All four interfaces connect to the same Gateway and can be used simultaneously — conversations started in WebChat are also visible in Dashboard's Conversations view.
 
-## 6. Frequently Asked Questions
+## 6. Additional Platform Features
+
+### Control UI
+- **Rounded corner slider**: Customize the interface corner radius, from sharp to fully rounded
+
+### Android
+- **Dark mode**: System-following dark mode covering all screens — onboarding, chat, and voice pages
+
+### Browser Integration
+- Connects directly to Brave, Edge, and other Chromium-based browsers via `userDataDir`
+
+### Sandbox System
+- **Pluggable backends**: Sandbox supports Docker, OpenShell, and SSH backends — no longer tied to Docker alone
+
+## 7. Frequently Asked Questions
 
 **Dashboard shows a connection failure?**
 

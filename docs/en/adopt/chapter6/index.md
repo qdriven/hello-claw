@@ -956,7 +956,7 @@ Your message
   → Reply sent to chat platform
 ```
 
-Different sessions (e.g., different group chats) run in parallel, controlled by `agents.defaults.maxConcurrent` (default 4). Agent run timeout defaults to 600 seconds.
+Different sessions (e.g., different group chats) run in parallel, controlled by `agents.defaults.maxConcurrent` (default 4). Agent run timeout defaults to 48 hours, sufficient for long-running ACP sessions.
 
 ### System prompt composition
 
@@ -1264,6 +1264,11 @@ Configuration (you can specify a different model for compaction summaries):
 ```
 
 `identifierPolicy`: `strict` (default, preserves identifiers) / `off` / `custom`
+
+**Compaction reliability**:
+- Large session compaction automatically extends the run deadline to prevent timeout mid-compression
+- Orphaned `tool_result` blocks are automatically repaired after compaction, preventing residual data from breaking subsequent requests
+- Empty sessions do not trigger meaningless compaction loops
 
 ### Session pruning
 
@@ -1590,3 +1595,7 @@ A: Check Gateway status (`openclaw status`) and logs (`openclaw logs --limit 50`
 **Q: How do I protect privacy in multi-user scenarios?**
 
 A: Set `session.dmScope` to `per-channel-peer` to isolate each person's session. Run `openclaw security audit` to check security configuration.
+
+**Q: I want to ask a side question mid-conversation without disrupting the current context?**
+
+A: Use the `/btw` command. Send `/btw your question` at any time during a conversation — the Agent will answer quickly without affecting the current session's context. Think of it like leaning over to whisper a quick aside during a meeting, then carrying on.

@@ -161,7 +161,7 @@ export SILICONFLOW_API_KEY="sk-..."
 | **豆包** | Doubao-Seed-2.0 | 0.3 | 0.6 | Coding Plan 含 | 128K | 字节系，极致低价 |
 | **混元** | hunyuan-lite | **免费** | **免费** | **无限量** | 32K | 腾讯免费模型 |
 | **混元** | hunyuan-pro | 15 | 50 | — | 128K | 腾讯旗舰 |
-| **MiniMax** | MiniMax-M2.5 | 1 | 4 | 欢迎积分 | 200K+ | MoE 架构，多模态 |
+| **MiniMax** | MiniMax-M2.7 | 1 | 4 | 欢迎积分 | 200K+ | MoE 架构，多模态 |
 | **阶跃星辰** | Step-3.5-flash | 免费(via OR) | 免费(via OR) | OpenRouter 免费 | 128K | 通过 OpenRouter 免费用 |
 | **文心** | ERNIE-4.5-turbo | 4 | 12 | 有免费额度 | 128K | 百度系 |
 
@@ -357,7 +357,7 @@ export HUNYUAN_SECRET_KEY="..."
 [MiniMax](https://platform.minimaxi.com) 以 MoE 架构和多模态能力著称。
 
 **模型矩阵：**
-- **MiniMax-M2.5**：旗舰 MoE 模型（229B 参数，~10B 活跃），200K+ 上下文
+- **MiniMax-M2.7**：旗舰 MoE 模型（229B 参数，~10B 活跃），200K+ 上下文
 - **MiniMax-Text**：文本专用
 - **MiniMax-VL**：视觉理解
 
@@ -370,7 +370,7 @@ export HUNYUAN_SECRET_KEY="..."
 **OpenClaw 配置：**
 ```bash
 export MINIMAX_API_KEY="..."
-# model: "minimax:MiniMax-M2.5"
+# model: "minimax:MiniMax-M2.7"
 ```
 
 **链接：** [platform.minimaxi.com](https://platform.minimaxi.com) | [MaxClaw](https://maxclaw.ai/)
@@ -462,7 +462,8 @@ export MINIMAX_API_KEY="..."
 [OpenAI](https://platform.openai.com) 是大模型行业的开创者，GPT 系列模型在综合能力上长期领先。
 
 **模型矩阵：**
-- **GPT-5**：最新旗舰，综合能力最强
+- **GPT-5.4**：OpenClaw 默认模型，综合能力最强（同时预置了 gpt-5.4-mini 和 gpt-5.4-nano 支持）
+- **GPT-5**：上一代旗舰
 - **GPT-4o**：多模态旗舰，支持文本/图像/音频输入
 - **GPT-4o-mini**：轻量高性价比
 - **o3 / o3-mini**：深度推理模型（类似 DeepSeek R1，但更强）
@@ -518,6 +519,8 @@ export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-..."
 # model: "anthropic:claude-sonnet-4-5-20250514"
 ```
+
+> **Anthropic Vertex 接入**：支持通过 Google Vertex AI 直接调用 Claude 模型，包括 GCP 认证和自动发现。对已在 Google Cloud 上运行业务的团队，这条路径无需额外的 Anthropic API Key。
 
 **链接：** [console.anthropic.com](https://console.anthropic.com)
 

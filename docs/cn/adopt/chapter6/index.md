@@ -956,7 +956,7 @@ openclaw config set agent.skipBootstrap true
   → 回复发送到聊天平台
 ```
 
-不同会话（比如不同群聊）之间是并行的，通过 `agents.defaults.maxConcurrent`（默认 4）控制最大并行数。Agent 运行超时默认 600 秒。
+不同会话（比如不同群聊）之间是并行的，通过 `agents.defaults.maxConcurrent`（默认 4）控制最大并行数。Agent 运行超时默认 48 小时，足以支持长时间运行的 ACP 会话。
 
 ### 系统提示词构成
 
@@ -1264,6 +1264,11 @@ OpenClaw 的记忆是**纯 Markdown 文件**——文件就是唯一真相来源
 ```
 
 `identifierPolicy`：`strict`（默认，保留标识符）/ `off` / `custom`
+
+**压缩可靠性保障**：
+- 大型会话压缩时自动延长运行截止时间，避免压缩到一半被超时中断
+- 压缩后自动修复孤立的 `tool_result` 块，防止残余数据导致后续请求报错
+- 空会话不会触发无意义的压缩循环
 
 ### 会话修剪（Session Pruning）
 
@@ -1590,3 +1595,7 @@ A: 检查 Gateway 状态（`openclaw status`）和日志（`openclaw logs --limi
 **Q: 如何保护多人场景下的隐私？**
 
 A: 设置 `session.dmScope` 为 `per-channel-peer` 隔离每个人的会话。运行 `openclaw security audit` 检查安全配置。
+
+**Q: 对话中途想问个题外话，又不想打断当前上下文？**
+
+A: 使用 `/btw` 命令。在对话中随时发送 `/btw 你的问题`，Agent 会快速回答但不影响当前会话的上下文——就像开会时侧过身低声问一句题外话，问完继续开会。

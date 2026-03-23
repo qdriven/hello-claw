@@ -540,13 +540,21 @@ openclaw secrets audit --check
 
 ## 七、插件开发
 
-对于比技能更复杂的扩展需求（如自定义 Transport、新增 Tool 类型），可以开发插件：
+对于比技能更复杂的扩展需求（如自定义 Transport、新增 Tool 类型），可以开发插件。
+
+::: tip 插件开发须知
+- 插件开发使用 `openclaw/plugin-sdk/*` 模块化接口，详见 [Plugin SDK 文档](https://github.com/openclaw/openclaw/tree/main/packages/plugin-sdk)。
+- **ClawHub 是首选分发渠道**：执行 `openclaw plugins install` 时，系统优先从 ClawHub 查找插件，找不到才回退到 npm。
+- **跨生态兼容**：支持 Claude、Codex、Cursor 三大主流开发工具插件包的发现与安装，能将外部插件中的 Skills 自动映射到 OpenClaw 技能体系。
+:::
+
+### 插件管理命令
 
 ```bash
 # 列出已安装插件
 openclaw plugins list
 
-# 安装插件
+# 安装插件（3.22 起优先从 ClawHub 查找，找不到回退 npm）
 openclaw plugins install <path|.tgz|npm-spec>
 
 # 启用/禁用插件
@@ -556,6 +564,10 @@ openclaw plugins disable <id>
 # 插件诊断
 openclaw plugins doctor
 ```
+
+### 图像生成模型配置
+
+插件中的图像生成能力统一通过 `agents.defaults.imageGenerationModel` 配置路径管理。
 
 ---
 

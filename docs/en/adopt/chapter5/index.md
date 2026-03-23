@@ -25,7 +25,7 @@ The model identifier format is `provider/model-name`, for example:
 |------|------|
 | `openrouter/stepfun/step-3.5-flash:free` | A free model on OpenRouter |
 | `anthropic/claude-opus-4-6` | Anthropic's flagship model |
-| `openai/gpt-5.1-codex` | OpenAI's coding-focused model |
+| `openai/gpt-5.4` | OpenAI's flagship model (default) |
 | `ollama/llama3.3` | A model running locally on your machine |
 
 ---
@@ -67,7 +67,7 @@ When sending images, if the primary model does not support image input, OpenClaw
   agents: {
     defaults: {
       imageModel: {
-        primary: "openai/gpt-5.1-codex",
+        primary: "openai/gpt-5.4",
         fallbacks: ["google/gemini-3-pro-preview"]
       }
     }
@@ -123,7 +123,7 @@ No restart needed — switch at any time:
 openclaw models status                          # View current primary model + fallbacks + auth overview
 openclaw models list                            # View configured models
 openclaw models list --all                      # View all available models
-openclaw models set openai/gpt-5.1-codex        # Set the primary model
+openclaw models set openai/gpt-5.4        # Set the primary model
 openclaw models set-image google/gemini-3-pro-preview  # Set the image model
 ```
 
@@ -182,7 +182,7 @@ Just set the API key — no additional configuration required:
 
 | Provider | Provider ID | Authentication | Example Model |
 |--------|-------------|---------|---------|
-| OpenAI | `openai` | `OPENAI_API_KEY` | `openai/gpt-5.1-codex` |
+| OpenAI | `openai` | `OPENAI_API_KEY` | `openai/gpt-5.4` |
 | Anthropic | `anthropic` | `ANTHROPIC_API_KEY` | `anthropic/claude-opus-4-6` |
 | OpenAI Code (Codex) | `openai-codex` | OAuth login | `openai-codex/gpt-5.3-codex` |
 | OpenCode Zen | `opencode` | `OPENCODE_API_KEY` | `opencode/claude-opus-4-6` |
@@ -206,7 +206,7 @@ Just set the API key — no additional configuration required:
 ```json5
 {
   agents: {
-    defaults: { model: { primary: "openai/gpt-5.1-codex" } }
+    defaults: { model: { primary: "openai/gpt-5.4" } }
   }
 }
 ```
@@ -220,7 +220,7 @@ Just set the API key — no additional configuration required:
   agents: {
     defaults: {
       models: {
-        "openai/gpt-5.1-codex": {
+        "openai/gpt-5.4": {
           params: { transport: "sse" }  // Force SSE
         }
       }
@@ -476,7 +476,7 @@ Any OpenAI or Anthropic-compatible API can be integrated via `models.providers`:
         api: "openai-completions",
         models: [{
           id: "minimax-m2.5-gs32",
-          name: "MiniMax M2.5",
+          name: "MiniMax M2.7",
           contextWindow: 200000,
           maxTokens: 8192,
         }]
@@ -561,7 +561,7 @@ Failover happens in two stages: first, rotation across multiple keys from the sa
       model: {
         primary: "anthropic/claude-opus-4-6",
         fallbacks: [
-          "openai/gpt-5.1-codex",
+          "openai/gpt-5.4",
           "google/gemini-3-pro-preview"
         ]
       }

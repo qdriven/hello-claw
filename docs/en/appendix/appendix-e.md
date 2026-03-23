@@ -161,7 +161,7 @@ Common advantages of domestic providers: **direct connection without VPN**, **Al
 | **Doubao** | Doubao-Seed-2.0 | 0.3 | 0.6 | Included in Coding Plan | 128K | ByteDance, ultra-low price |
 | **Hunyuan** | hunyuan-lite | **Free** | **Free** | **Unlimited** | 32K | Tencent free model |
 | **Hunyuan** | hunyuan-pro | 15 | 50 | — | 128K | Tencent flagship |
-| **MiniMax** | MiniMax-M2.5 | 1 | 4 | Welcome credits | 200K+ | MoE architecture, multimodal |
+| **MiniMax** | MiniMax-M2.7 | 1 | 4 | Welcome credits | 200K+ | MoE architecture, multimodal |
 | **StepFun** | Step-3.5-flash | Free (via OR) | Free (via OR) | Free via OpenRouter | 128K | Free through OpenRouter |
 | **ERNIE** | ERNIE-4.5-turbo | 4 | 12 | Free quota available | 128K | Baidu ecosystem |
 
@@ -357,7 +357,7 @@ export HUNYUAN_SECRET_KEY="..."
 [MiniMax](https://platform.minimaxi.com) is known for its MoE architecture and multimodal capabilities.
 
 **Model Lineup:**
-- **MiniMax-M2.5**: Flagship MoE model (229B params, ~10B active), 200K+ context
+- **MiniMax-M2.7**: Flagship MoE model (229B params, ~10B active), 200K+ context
 - **MiniMax-Text**: Text-specialized
 - **MiniMax-VL**: Visual understanding
 
@@ -370,7 +370,7 @@ export HUNYUAN_SECRET_KEY="..."
 **OpenClaw Configuration:**
 ```bash
 export MINIMAX_API_KEY="..."
-# model: "minimax:MiniMax-M2.5"
+# model: "minimax:MiniMax-M2.7"
 ```
 
 **Link:** [platform.minimaxi.com](https://platform.minimaxi.com) | [MaxClaw](https://maxclaw.ai/)
@@ -462,7 +462,8 @@ International providers generally offer the most cutting-edge model capabilities
 [OpenAI](https://platform.openai.com) is the pioneer of the large model industry. The GPT series has long led in overall capability.
 
 **Model Lineup:**
-- **GPT-5**: Latest flagship, strongest overall capability
+- **GPT-5.4**: Default OpenClaw model, strongest overall capability (with gpt-5.4-mini and gpt-5.4-nano pre-configured)
+- **GPT-5**: Previous flagship
 - **GPT-4o**: Multimodal flagship, supports text/image/audio input
 - **GPT-4o-mini**: Lightweight and high-value
 - **o3 / o3-mini**: Deep reasoning models (similar to DeepSeek R1, but stronger)
@@ -518,6 +519,8 @@ export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-..."
 # model: "anthropic:claude-sonnet-4-5-20250514"
 ```
+
+> **Anthropic Vertex Integration**: Supports calling Claude models directly via Google Vertex AI, including GCP authentication and auto-discovery. For teams already running on Google Cloud, this path requires no separate Anthropic API Key.
 
 **Link:** [console.anthropic.com](https://console.anthropic.com)
 

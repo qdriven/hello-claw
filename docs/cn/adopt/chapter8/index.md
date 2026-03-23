@@ -203,7 +203,7 @@ OpenClaw 读取环境变量的优先级：
         models: [
           {
             id: "minimax-m2.5-gs32",
-            name: "MiniMax M2.5 GS32",
+            name: "MiniMax M2.7 GS32",
             reasoning: false,
             input: ["text"],
             cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },

@@ -100,6 +100,18 @@ For pure stream-data processing tools, approving each one individually generates
 
 There is only one criterion: **is the behavior completely deterministic, completely read-only, and completely confined to memory and standard streams?** Any tool capable of interpreting and executing arbitrary code should never enter safeBins — programming language interpreters, the shell itself, utility tools with write parameters — once included, they punch a hole in allowlist mode.
 
+### Environment Variable Injection Protection
+
+The command execution sandbox also blocks environment variable injection paths used by mainstream build toolchains, preventing attackers from hijacking the build process through environment variables:
+
+| Blocked Environment Variables | Attack Vector |
+|------------------------------|---------------|
+| `MAVEN_OPTS`, `SBT_OPTS`, `GRADLE_OPTS` | JVM startup parameter injection, can load arbitrary classes |
+| `GLIBC_TUNABLES` | glibc tuning interface, can trigger local privilege escalation |
+| `DOTNET_ADDITIONAL_DEPS` | .NET dependency hijacking, can inject arbitrary assemblies |
+
+These environment variables are automatically cleared in the sandbox execution environment — the Agent cannot set them to influence build tool behavior.
+
 ---
 
 ## V. Progressive Trust: From Conservative to Open

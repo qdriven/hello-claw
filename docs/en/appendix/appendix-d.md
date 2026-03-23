@@ -540,13 +540,21 @@ Supported SecretRef `source` types:
 
 ## VII. Plugin Development
 
-For extension needs more complex than skills (such as custom Transports or new Tool types), you can develop a plugin:
+For extension needs more complex than skills (such as custom Transports or new Tool types), you can develop a plugin.
+
+::: tip Plugin Development Notes
+- Plugin development uses the modular `openclaw/plugin-sdk/*` interface. See the [Plugin SDK documentation](https://github.com/openclaw/openclaw/tree/main/packages/plugin-sdk).
+- **ClawHub is the preferred distribution channel**: When running `openclaw plugins install`, the system searches ClawHub first, falling back to npm only if the package is not found.
+- **Cross-ecosystem compatibility**: Supports discovering and installing plugin packages from Claude, Codex, and Cursor — their Skills are automatically mapped into the OpenClaw skill system.
+:::
+
+### Plugin Management Commands
 
 ```bash
 # List installed plugins
 openclaw plugins list
 
-# Install a plugin
+# Install a plugin (from 3.22, ClawHub is checked first; falls back to npm)
 openclaw plugins install <path|.tgz|npm-spec>
 
 # Enable/disable a plugin
@@ -556,6 +564,10 @@ openclaw plugins disable <id>
 # Plugin diagnostics
 openclaw plugins doctor
 ```
+
+### Image Generation Model Configuration
+
+Image generation capabilities in plugins are managed through the unified `agents.defaults.imageGenerationModel` configuration path.
 
 ---
 

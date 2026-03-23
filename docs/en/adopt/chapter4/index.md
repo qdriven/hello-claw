@@ -383,3 +383,17 @@ Run `openclaw gateway restart`. For more configuration options, see [Appendix G]
 **@mentioned the bot in a group chat but no response?**
 
 Check whether `groupPolicy` is set to `"disabled"` or `"allowlist"` (the latter requires adding the group ID to the allowlist).
+
+## 7. Channel-Specific Features
+
+### Feishu / Lark
+
+- **Structured interactive approval cards**: Operation approvals are displayed as Feishu cards with one-click confirm/reject
+- **Quick action launch cards**: Common operations presented as card-based shortcuts
+- **Reasoning stream rendering**: The Agent's thinking process is displayed in real-time as Markdown blockquotes within the same card
+- **Per-session ACP and sub-agent binding**: Supports binding specific Agent configurations at the session level
+
+### Telegram
+
+- **DM forum topic auto-naming**: After the first message arrives, the system uses LLM to generate a meaningful topic label automatically
+- **Silent error reply mode**: Bot error messages can optionally be sent without notification sounds to avoid disturbing users

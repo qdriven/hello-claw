@@ -196,6 +196,21 @@ export OPENROUTER_API_KEY="sk-..."
 - **Do not store passwords, tokens, or other sensitive information in workspace files**
 - **Rotate API Keys regularly**: if you suspect a Key has been leaked, immediately regenerate it in the provider's dashboard
 
+### 3.6 Known Attack Surfaces and Built-in Protections
+
+OpenClaw provides built-in protections against the following known attack surfaces:
+
+| Attack Surface | Risk | Protection |
+|--------------|------|----------|
+| **Windows SMB credential leakage** | Attackers craft special `file://` or UNC paths that trigger Windows automatic SMB authentication handshakes during media loading, leaking login credentials | Remote paths are now blocked across all core media loading and sandbox attachment paths |
+| **Execution environment variable injection** | Injection via JVM paths such as `MAVEN_OPTS`, `SBT_OPTS`, `GRADLE_OPTS`, as well as `GLIBC_TUNABLES` and .NET's `DOTNET_ADDITIONAL_DEPS` for dependency hijacking | Mainstream build toolchain environment variable injection paths are now blocked |
+| **Unicode zero-width character approval spoofing** | Invisible characters like Hangul Filler are used to disguise command approval prompts, preventing operators from seeing the actual command content | Invisible characters are now fully escaped in the gateway and macOS native approval dialogs |
+| **Voice Webhook pre-auth resource exhaustion** | Unauthenticated callers consume server resources with a 1MB/30s large buffer window | Pre-auth body read limit reduced to 64KB/5s, with per-IP concurrent pre-auth request limits |
+
+::: tip Keep Updated
+Run `openclaw upgrade` or `npm update -g openclaw` regularly to get the latest security fixes.
+:::
+
 ## 4. Advanced Protection: Virtual Machine Isolation Architecture
 
 > **Give it full access, but keep your keys out of reach.**

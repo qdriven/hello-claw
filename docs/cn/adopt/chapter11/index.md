@@ -257,7 +257,21 @@ openclaw logs --limit 50 --plain | openclaw agent --message "有什么异常？"
 
 四种界面连接同一个 Gateway，可以同时用——WebChat 里的对话在 Dashboard 的 Conversations 里也能查到。
 
-## 6. 常见问题
+## 6. 更多平台特性
+
+### Control UI
+- **圆角滑块**：可自定义界面圆角程度，从锐利到全圆自由调节
+
+### Android 端
+- **深色模式**：支持跟随系统深色模式，从引导页到聊天页到语音页全覆盖
+
+### 浏览器集成
+- 通过 `userDataDir` 直接连接 Brave、Edge 等 Chromium 内核浏览器
+
+### 沙箱系统
+- **可插拔后端**：沙箱支持 Docker、OpenShell 和 SSH 三种后端，不再绑定 Docker 单一方案
+
+## 7. 常见问题
 
 **Dashboard 显示连接失败？**
 
