@@ -118,7 +118,7 @@ openclaw --version
 <details>
 <summary>什么是 Node.js？</summary>
 
-OpenClaw 需要 Node.js 22+ 运行环境。Node.js 让用 JavaScript 编写的 OpenClaw 能在你的电脑上运行。你不需要学 JavaScript——安装脚本会自动处理。如果你已经装过 Node.js 22+，脚本会跳过这一步。
+OpenClaw 需要 Node.js 22.14+ 运行环境（推荐 Node 24）。Node.js 让用 JavaScript 编写的 OpenClaw 能在你的电脑上运行。你不需要学 JavaScript——安装脚本会自动处理。如果你已经装过 Node.js 22.14+，脚本会跳过这一步。`openclaw update` 会在升级前检查目标版本的 Node 要求，版本不满足时给出明确的升级提示。
 
 </details>
 

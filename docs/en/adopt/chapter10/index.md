@@ -206,6 +206,8 @@ OpenClaw provides built-in protections against the following known attack surfac
 | **Execution environment variable injection** | Injection via JVM paths such as `MAVEN_OPTS`, `SBT_OPTS`, `GRADLE_OPTS`, as well as `GLIBC_TUNABLES` and .NET's `DOTNET_ADDITIONAL_DEPS` for dependency hijacking | Mainstream build toolchain environment variable injection paths are now blocked |
 | **Unicode zero-width character approval spoofing** | Invisible characters like Hangul Filler are used to disguise command approval prompts, preventing operators from seeing the actual command content | Invisible characters are now fully escaped in the gateway and macOS native approval dialogs |
 | **Voice Webhook pre-auth resource exhaustion** | Unauthenticated callers consume server resources with a 1MB/30s large buffer window | Pre-auth body read limit reduced to 64KB/5s, with per-IP concurrent pre-auth request limits |
+| **Sandbox media dispatch path bypass** | Outbound tool and message actions escape media-root restrictions via `mediaUrl`/`fileUrl` aliases | Alias bypass closed; outbound media access aligned with configured fs policy; strict sandbox under `workspaceOnly` mode |
+| **Embedded run secret crash** | Unresolved `SecretRef` config crashes embedded agent runs | Falls back to resolved runtime snapshot when unresolved |
 
 ::: tip Keep Updated
 Run `openclaw upgrade` or `npm update -g openclaw` regularly to get the latest security fixes.

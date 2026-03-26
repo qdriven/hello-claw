@@ -835,6 +835,24 @@ curl -sS http://127.0.0.1:18789/v1/responses \
   -d '{"model": "openclaw:main", "input": "Hello"}'
 ```
 
+### Models and Embeddings Endpoints
+
+For broader client and RAG pipeline compatibility, the Gateway provides model listing and embedding endpoints:
+
+```bash
+# List available models
+curl -sS http://127.0.0.1:18789/v1/models \
+  -H 'Authorization: Bearer your-gateway-password'
+
+# Embeddings
+curl -sS http://127.0.0.1:18789/v1/embeddings \
+  -H 'Authorization: Bearer your-gateway-password' \
+  -H 'Content-Type: application/json' \
+  -d '{"model": "text-embedding-3-small", "input": "Hello world"}'
+```
+
+Explicit model override forwarding is supported through the `model` field in `/v1/chat/completions` and `/v1/responses` endpoints — the Gateway passes the override to the upstream provider.
+
 ### Tools Invoke Endpoint (Enabled by Default)
 
 ```bash
@@ -920,7 +938,19 @@ Foreground commands return output directly; background commands return a `sessio
 
 </details>
 
-## 10. Troubleshooting
+## 10. Container Execution
+
+If OpenClaw runs inside a Docker or Podman container, use the `--container` flag to execute commands directly inside the container without manual `docker exec`:
+
+```bash
+openclaw --container status
+openclaw --container gateway status
+openclaw --container config set agent.model "anthropic/claude-opus-4-6"
+```
+
+You can also set this via environment variable: `OPENCLAW_CONTAINER=1`.
+
+## 11. Troubleshooting
 
 When problems occur, run the following in order:
 
@@ -1006,11 +1036,11 @@ openclaw doctor
 Common issues:
 - `Failed to start Chrome CDP on port` — browser process failed to start
 - `browser.executablePath not found` — configured path is invalid
-- `Chrome extension relay is running, but no tab is connected` — extension relay is not connected
+- `userDataDir not accessible` — browser user data directory permission issue
 
 </details>
 
-## 11. FAQ
+## 12. FAQ
 
 **Q: The config is broken and Gateway won't start. What do I do?**
 

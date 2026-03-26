@@ -62,7 +62,8 @@ https://datawhalechina.github.io/hello-claw
 ## 🔥 最新动态
 
 - **[2026-03-25]** ✅ 龙虾大学完成一轮场景扩充与新手化重写，新增个人效率、编程开发、内容创作、商务销售、多智能体协作和更多场景共 11 篇可直接上手的实战案例，并同步按 README 分类整理
-- **[2026-03-23]** 🔥 OpenClaw 3.22 大版本发布：插件 SDK 重构（旧 extension-api 废弃）、安全加固（SMB 凭证泄露/环境变量注入/Unicode 伪装等十余项修复）、GPT-5.4 默认上位、飞书交互卡片/Telegram 话题自动命名、Agent 超时延长至 48h，教程全章节同步更新中
+- **[2026-03-25]** 🔥 OpenClaw v2026.3.24：Gateway OpenAI 兼容端点（`/v1/models`、`/v1/embeddings`）、Microsoft Teams 官方 SDK 集成（流式回复/欢迎卡片/消息编辑删除）、Skills 一键安装配方与 Control UI 状态过滤、Slack 富回复恢复、CLI `--container` 容器内执行、Discord LLM 自动线程命名、`before_dispatch` 插件钩子、沙箱媒体安全修复，教程全章节同步
+- **[2026-03-23]** 🔥 OpenClaw 3.22 大版本：插件 SDK 重构（旧 extension-api 废弃）、安全加固（SMB 凭证泄露/环境变量注入/Unicode 伪装等修复）、GPT-5.4 默认上位、飞书交互卡片/Telegram 话题自动命名、Agent 超时延长至 48h
 - **[2026-03-12]** ✅ 完成构建 Claw 第1-10章：核心架构解析（提示词系统、工具系统、消息循环、多渠道接入）、替代方案探索（轻量化、安全加固、硬件方案）、站在山巅回望总结
 - **[2026-03-10]** ✅ 完成构建 Claw 第13章：Skill 文件结构、Frontmatter、异步处理与调试
 - **[2026-03-10]** ✅ 新增龙虾大学：菜单式 Skills 选修指南，让龙虾装上"战斗外挂"

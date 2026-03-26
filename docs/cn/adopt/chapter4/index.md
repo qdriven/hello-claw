@@ -24,8 +24,8 @@ OpenClaw 支持几乎所有主流聊天软件，文字消息全渠道可用。
 | **QQ** | QQ 开放平台 Bot API | 插件 |
 | **WhatsApp** | 全球最流行；Baileys 库，需 QR 配对 | 内置 |
 | **Telegram** | Bot API（grammY）；支持群聊，API 最开放 | 内置 |
-| **Discord** | Bot API + Gateway；服务器、频道、私信 | 内置 |
-| **Slack** | Bolt SDK；工作区应用 | 内置 |
+| **Discord** | Bot API + Gateway；服务器、频道、私信；支持 LLM 自动线程命名 | 内置 |
+| **Slack** | Bolt SDK；工作区应用；富回复自动渲染按钮/选择器 | 内置 |
 | **Signal** | signal-cli；注重隐私 | 内置 |
 | **Google Chat** | Google Chat API；HTTP webhook | 内置 |
 | **iMessage** | BlueBubbles（推荐）或旧版 imsg CLI | 内置 |
@@ -34,7 +34,7 @@ OpenClaw 支持几乎所有主流聊天软件，文字消息全渠道可用。
 | **LINE** | LINE Messaging API | 插件 |
 | **Matrix** | Matrix 开放协议 | 插件 |
 | **Mattermost** | Bot API + WebSocket | 插件 |
-| **Microsoft Teams** | Bot Framework；企业支持 | 插件 |
+| **Microsoft Teams** | 官方 Teams SDK；流式回复、欢迎卡片、消息编辑/删除、AI 标注 | 插件 |
 | **Nostr** | 去中心化协议 NIP-04 | 插件 |
 | **Twitch** | IRC 连接 | 插件 |
 | **Zalo** | Zalo Bot API（越南） | 插件 |
@@ -396,4 +396,31 @@ openclaw config set channels.feishu.groups.<群ID>.requireMention false
 ### Telegram
 
 - **DM 论坛话题自动命名**：收到首条消息后，系统用 LLM 自动生成有意义的话题标签
+- **`#General` 话题路由恢复**：当 Telegram 省略 forum 元数据时，自动回退到话题 1（`#General`），包括原生命令、交互回调和入站消息上下文
 - **静默错误回复模式**：机器人的报错信息可选择不发出通知提示音，避免打扰用户
+- **照片尺寸预检**：发送前自动检测照片尺寸和宽高比，不符合 Telegram 规则时降级为文件发送，避免 `PHOTO_INVALID_DIMENSIONS` 错误
+- **403 错误保留可操作详情**：保留被踢/被拉黑等详细信息，`bot not a member` 视为永久投递失败，停止重试
+
+### Discord
+
+- **LLM 自动线程命名**：通过 `autoThreadName: "generated"` 启用异步 LLM 生成线程标题，默认仍使用消息内容命名
+- **超时可见回复**：入站消息超时未收到最终回复时，自动发送可见的超时提示（含自动创建的线程目标和排队运行排序）
+- **Gateway 错误统一监管**：集中化生命周期错误处理，防止 Carbon gateway 拆除时的进程崩溃
+
+### Slack
+
+- **富回复恢复**：直投消息恢复富回复功能，尾部 `Options:` 行自动渲染为按钮/选择器
+- **运行时默认值优化**：精简 DM 回复开销，恢复 Codex 自动传输，收紧 DM 预览线程、缓存作用域和 Web 搜索显式启用等默认值
+
+### WhatsApp
+
+- **群组回声抑制**：追踪 Gateway 发送的消息 ID，仅抑制匹配的群组回声，保留主人的 `/status`、`/new`、`/activation` 命令
+- **隐式群组回复检测恢复**：展开 `botInvokeMessage` 载荷并读取 `creds.json` 中的 `selfLid`，恢复关联账号群聊中的 bot 提及检测
+
+### Microsoft Teams
+
+- **官方 Teams SDK 集成**：迁移到官方 SDK，遵循 AI 代理最佳实践
+- **流式 1:1 回复**：支持流式回复消息
+- **欢迎卡片与提示启动器**：新用户加入时展示带常用提示的欢迎卡片
+- **消息编辑与删除**：支持对已发送消息进行编辑和删除操作，线程内无明确目标时自动回退
+- **AI 标注与状态指示器**：原生 AI 标注、打字指示器和信息性状态更新

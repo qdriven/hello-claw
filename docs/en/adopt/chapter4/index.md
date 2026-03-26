@@ -24,8 +24,8 @@ OpenClaw supports almost all mainstream chat applications, with text messaging a
 | **QQ** | QQ Open Platform Bot API | Plugin |
 | **WhatsApp** | Most popular globally; Baileys library, requires QR pairing | Built-in |
 | **Telegram** | Bot API (grammY); supports group chats, most open API | Built-in |
-| **Discord** | Bot API + Gateway; servers, channels, direct messages | Built-in |
-| **Slack** | Bolt SDK; workspace apps | Built-in |
+| **Discord** | Bot API + Gateway; servers, channels, DMs; LLM auto thread naming | Built-in |
+| **Slack** | Bolt SDK; workspace apps; rich replies with auto-rendered buttons/selects | Built-in |
 | **Signal** | signal-cli; privacy-focused | Built-in |
 | **Google Chat** | Google Chat API; HTTP webhook | Built-in |
 | **iMessage** | BlueBubbles (recommended) or legacy imsg CLI | Built-in |
@@ -34,7 +34,7 @@ OpenClaw supports almost all mainstream chat applications, with text messaging a
 | **LINE** | LINE Messaging API | Plugin |
 | **Matrix** | Matrix open protocol | Plugin |
 | **Mattermost** | Bot API + WebSocket | Plugin |
-| **Microsoft Teams** | Bot Framework; enterprise support | Plugin |
+| **Microsoft Teams** | Official Teams SDK; streaming replies, welcome cards, message edit/delete, AI labeling | Plugin |
 | **Nostr** | Decentralized protocol NIP-04 | Plugin |
 | **Twitch** | IRC connection | Plugin |
 | **Zalo** | Zalo Bot API (Vietnam) | Plugin |
@@ -396,4 +396,31 @@ Check whether `groupPolicy` is set to `"disabled"` or `"allowlist"` (the latter 
 ### Telegram
 
 - **DM forum topic auto-naming**: After the first message arrives, the system uses LLM to generate a meaningful topic label automatically
+- **`#General` topic routing recovery**: When Telegram omits forum metadata, automatically falls back to topic 1 (`#General`), including native commands, interactive callbacks, and inbound message context
 - **Silent error reply mode**: Bot error messages can optionally be sent without notification sounds to avoid disturbing users
+- **Photo dimension preflight**: Automatically checks photo dimensions and aspect ratio before sending; falls back to document sends when invalid, preventing `PHOTO_INVALID_DIMENSIONS` errors
+- **403 error detail preservation**: Preserves actionable membership/block/kick details; treats `bot not a member` as permanent delivery failure, stopping retries
+
+### Discord
+
+- **LLM auto thread naming**: Enable via `autoThreadName: "generated"` for asynchronous LLM-generated thread titles; message-based naming remains the default
+- **Timeout visible reply**: Sends a visible timeout reply when inbound worker times out before the final reply starts, including auto-created thread targets and queued-run ordering
+- **Gateway error supervision**: Centralized lifecycle error handling prevents Carbon gateway teardown crashes
+
+### Slack
+
+- **Rich reply restoration**: Direct delivery messages restore rich reply parity; trailing `Options:` lines auto-render as buttons/selects
+- **Runtime defaults optimization**: Trimmed DM reply overhead, restored Codex auto transport, tightened DM preview threading, cache scoping, and explicit web-search opt-in defaults
+
+### WhatsApp
+
+- **Group echo suppression**: Tracks gateway-sent message IDs and suppresses only matching group echoes, preserving owner `/status`, `/new`, `/activation` commands
+- **Implicit group reply detection restored**: Unwraps `botInvokeMessage` payloads and reads `selfLid` from `creds.json`, restoring bot mention detection in linked-account group chats
+
+### Microsoft Teams
+
+- **Official Teams SDK integration**: Migrated to official SDK following AI-agent best practices
+- **Streaming 1:1 replies**: Supports streaming message replies
+- **Welcome cards with prompt starters**: Displays welcome cards with common prompts when new users join
+- **Message edit and delete**: Supports editing and deleting sent messages, with in-thread fallbacks when no explicit target is provided
+- **AI labeling and status indicators**: Native AI labeling, typing indicators, and informative status updates

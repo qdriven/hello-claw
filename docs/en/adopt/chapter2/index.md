@@ -118,7 +118,7 @@ openclaw --version
 <details>
 <summary>What is Node.js?</summary>
 
-OpenClaw requires a Node.js 22+ runtime. Node.js allows OpenClaw, which is written in JavaScript, to run on your computer. You do not need to learn JavaScript — the installation script handles everything automatically. If you already have Node.js 22+ installed, the script will skip this step.
+OpenClaw requires a Node.js 22.14+ runtime (Node 24 recommended). Node.js allows OpenClaw, which is written in JavaScript, to run on your computer. You do not need to learn JavaScript — the installation script handles everything automatically. If you already have Node.js 22.14+ installed, the script will skip this step. `openclaw update` performs a preflight check of the target version's Node requirements and shows a clear upgrade message if your runtime is too old.
 
 </details>
 

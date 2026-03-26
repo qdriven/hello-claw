@@ -206,6 +206,8 @@ OpenClaw 针对以下已知攻击面提供了内置防护：
 | **执行环境变量注入** | 通过 `MAVEN_OPTS`、`SBT_OPTS`、`GRADLE_OPTS` 等 JVM 注入路径，以及 `GLIBC_TUNABLES`、`.NET` 的 `DOTNET_ADDITIONAL_DEPS` 等进行依赖劫持 | 封锁主流构建工具链的环境变量注入路径 |
 | **Unicode 零宽字符审批伪装** | 利用韩文填充码位（Hangul Filler）等不可见字符伪装命令审批提示，让操作者看不到真实命令内容 | 网关和 macOS 原生审批界面全面转义不可见字符 |
 | **语音 Webhook 预认证资源耗尽** | 未认证调用者以 1MB/30s 的大缓冲窗口消耗服务器资源 | 预认证 body 读取限制压缩到 64KB/5s，限制单 IP 并发预认证请求数 |
+| **沙箱媒体分发路径绕过** | 出站工具和消息操作通过 `mediaUrl`/`fileUrl` 别名绕过媒体根目录限制 | 关闭别名绕过，出站媒体访问与配置的文件系统策略对齐；`workspaceOnly` 模式下严格沙箱 |
+| **嵌入式运行密钥崩溃** | 未解析的 `SecretRef` 配置导致嵌入式 Agent 运行崩溃 | 未解析时回退到已解析的运行时快照 |
 
 ::: tip 保持更新
 定期运行 `openclaw upgrade` 或 `npm update -g openclaw` 以获取最新安全修复。

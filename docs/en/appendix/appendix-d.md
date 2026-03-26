@@ -318,6 +318,7 @@ Notes:
 | `metadata.requires.bins` | `["node"]` | Declares a Node.js requirement; checked automatically at load time |
 | `metadata.requires.env` | `["TAVILY_API_KEY"]` | Marks the skill "unavailable" rather than crashing when not set |
 | `metadata.primaryEnv` | `TAVILY_API_KEY` | Tells the configuration wizard which key to prompt the user for |
+| `metadata.installRecipe` | `{ "bins": ["node"], "npm": ["tavily"] }` | One-click install recipe: CLI and Control UI auto-prompt for dependency installation when requirements are missing |
 
 **Script Design Patterns**
 
@@ -361,7 +362,7 @@ Set the API Key after installation and the skill is ready to use:
 echo 'TAVILY_API_KEY=tvly-your-key-here' >> ~/.openclaw/.env
 ```
 
-Skills installed via ClawHub are enabled by default. To manage them manually, use `openclaw skills list` to check status.
+Skills installed via ClawHub are enabled by default. Use `openclaw skills list` to check status, and `openclaw skills info <name>` to view details (including API key setup guidance and storage path hints). Skills with missing dependencies are labeled **Needs Setup** instead of "missing".
 
 ---
 

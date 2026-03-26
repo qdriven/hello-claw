@@ -49,7 +49,7 @@ The browser opens `http://localhost:18789` automatically. If it doesn't, navigat
 | **Conversations** | View conversation history, message details, and tool call records |
 | **Channels** | View the status of connected channels |
 | **Sessions** | Manage active sessions and context |
-| **Skills** | Browse and manage installed skills |
+| **Skills** | Browse skills by status filter (All / Ready / Needs Setup / Disabled); click for details, install dependencies, and set API keys |
 | **Cron** | View and manage scheduled tasks |
 | **Logs** | View the Gateway log stream in real time |
 
@@ -164,7 +164,7 @@ Point the client's API address to `http://127.0.0.1:18789/v1/chat/completions`, 
 
 ## 3. Control UI (macOS Desktop Client)
 
-A native desktop application exclusive to macOS (OpenClaw.app): lives in the menu bar, sends native notifications, and lets you manage the Gateway without a terminal.
+A native desktop application exclusive to macOS (OpenClaw.app): lives in the menu bar, sends native notifications, and lets you manage the Gateway without a terminal. The config interface uses a collapsible tree sidebar for navigation, and the agent workspace supports expandable inline Markdown file preview.
 
 ### Installation
 

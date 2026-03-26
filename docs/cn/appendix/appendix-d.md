@@ -318,6 +318,7 @@ Notes:
 | `metadata.requires.bins` | `["node"]` | 声明需要 Node.js，加载时自动检查 |
 | `metadata.requires.env` | `["TAVILY_API_KEY"]` | 未设置时技能标记为"不可用"而非崩溃 |
 | `metadata.primaryEnv` | `TAVILY_API_KEY` | 告诉配置向导该提示用户填哪个 Key |
+| `metadata.installRecipe` | `{ "bins": ["node"], "npm": ["tavily"] }` | 一键安装配方：CLI 和 Control UI 在依赖缺失时自动提示安装 |
 
 **脚本设计模式**
 
@@ -361,7 +362,7 @@ for (const r of results) {
 echo 'TAVILY_API_KEY=tvly-你的密钥' >> ~/.openclaw/.env
 ```
 
-安装时技能默认启用。如需手动管理，使用 `openclaw skills list` 查看状态。
+安装时技能默认启用。使用 `openclaw skills list` 查看状态，`openclaw skills info <name>` 查看详情（含 API Key 获取指引和存储路径提示）。缺少依赖的技能显示为 **Needs Setup** 而非 "missing"。
 
 ---
 
