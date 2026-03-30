@@ -148,7 +148,7 @@ https://datawhalechina.github.io/hello-claw
 | 附录 G：配置文件详解           | openclaw.json 各项参数逐项解读                            | ✅   |
 
 ---
-
+构建 Claw（开发篇，11 章）
 ### 第二部分：构建 Claw（开发篇，11 章）
 
 | 章节                                               | 简介                                                                 | 状态 |
