@@ -1,8 +1,10 @@
 # 第十三章 Skill 编写
 
-如果说第十二章讲的是“通过配置开关定制 OpenClaw”，那么这一章讲的就是另一条更常用的路：**不改核心代码，也不碰渠道适配层，而是把一项新能力封装成 Skill**。
+前面几章主要在解释 OpenClaw 为什么这样设计，以及这些设计怎样落到工具、消息循环和网关上。这一章切到更常用的定制入口：**不改核心代码，也不碰渠道适配层，而是把一项新能力封装成 Skill**。
 
 这是 OpenClaw 很实用的一层定制接口。你不用先吃透整个 Gateway，也能把提示词、工具调用、外部脚本、依赖门禁和 Slash Command 串成一条完整链路。
+
+> **核验说明（2026-04-03）**：本章与附录 D 统一采用当前 OpenClaw Skills 命名空间 `metadata.openclaw.*`，并推荐把 `metadata` 写成单行 JSON，以减少解析歧义。
 
 本章我们只回答三个问题：
 
@@ -27,7 +29,7 @@
 
 - `SKILL.md` 负责告诉模型“什么时候用我、按什么顺序做、哪些坑不能踩”。
 - `impl/`、`scripts/`、`references/` 这些目录则承载真正的实现细节。
-- OpenClaw 自己负责做加载、筛选、缓存、热更新和命令暴露。
+- OpenClaw 自己负责做加载、筛选、缓存和命令暴露；在当前公开文档里，Skill 刷新通常通过新会话、显式 refresh 或 watcher 驱动的更新路径来体现。
 
 理解这个边界很重要。后面你会发现，所谓“Skill 的异步处理”，本质上并不是在 `SKILL.md` 里写 `async/await`，而是把耗时工作拆给外部脚本或工具，再由 Agent 循环把它们串起来。
 
@@ -40,7 +42,7 @@
 一个比较实用的目录结构通常是这样：
 
 ```text
-~/.openclaw/workspace/
+<workspace>/
 └── skills/
     └── weekly-report/
         ├── SKILL.md
@@ -53,6 +55,8 @@
             └── report-template.md
 ```
 
+在默认本地安装里，`<workspace>` 往往会落到 `~/.openclaw/workspace`，所以你在官方示例里也会经常看到这个更长的绝对路径写法。
+
 这几个部分的职责建议分清：
 
 - `SKILL.md`：唯一必需文件。定义元数据、适用场景、执行流程、质量标准和失败处理原则。
@@ -62,19 +66,22 @@
 
 这里有一个容易忽略的点：**不要把所有实现细节都堆进 `SKILL.md`**。如果一段流程已经细到接近脚本了，就应该抽到 `impl/`；如果一段说明主要是示例和背景资料，就应该挪到 `references/`。否则 Skill 会越来越长，模型每次都要读取大量无关信息，既浪费上下文，也更容易走偏。
 
-在 OpenClaw 里，Skill 会从多个位置被发现：
+在 OpenClaw 里，当前公开文档给出的完整扫描链路是：
 
-- 内置 Skills：随 OpenClaw 安装包一起分发
-- 共享 Skills：`~/.openclaw/skills`
 - 当前工作区 Skills：`<workspace>/skills`
-- 额外目录：`skills.load.extraDirs`
-- 兼容 `.agents/skills`：个人级和项目级目录也会被扫描
+- 当前工作区兼容目录：`<workspace>/.agents/skills`
+- 个人兼容目录：`~/.agents/skills`
+- 共享 Skills：`~/.openclaw/skills`
+- 内置 Skills：随 OpenClaw 安装包一起分发
+- 额外目录：`skills.load.extraDirs`（最低优先级，显式配置才会参与）
 
-如果同名 Skill 同时存在，OpenClaw 会按优先级覆盖：
+如果同名 Skill 同时存在，覆盖顺序可以记成：
 
 ```text
-extraDirs < bundled < ~/.openclaw/skills < ~/.agents/skills < <project>/.agents/skills < <workspace>/skills
+extraDirs < bundled < ~/.openclaw/skills < ~/.agents/skills < <workspace>/.agents/skills < <workspace>/skills
 ```
+
+如果你只是自己写一个项目内 Skill，新手最常用的仍然是最后两层：`<workspace>/skills` 最容易覆盖当前项目，`~/.openclaw/skills` 更适合跨项目复用。
 
 这套优先级非常适合做“本地覆盖”。比如你想修一个官方 Skill 的提示词，不用直接改上游仓库，只要在自己的工作区里放一个同名 Skill，当前项目就会优先使用本地版本。
 
@@ -187,10 +194,10 @@ metadata: { "openclaw": { "emoji": "📝", "requires": { "bins": ["node", "git"]
 先在当前工作区下创建一个 Skill 目录：
 
 ```bash
-mkdir -p ~/.openclaw/workspace/skills/current-time
+mkdir -p skills/current-time
 ```
 
-如果你当前项目已经有独立工作区，也可以把它放在：
+如果你当前 shell 不在工作区根目录，也可以显式写成：
 
 ```text
 <workspace>/skills/current-time
@@ -439,15 +446,15 @@ OpenClaw 对这类路径逃逸是有安全检查的，不会无条件放行。
 
 ### 6.2 再看是不是会话缓存还没刷新
 
-OpenClaw 会在**会话启动时**对可用 Skill 做一次快照，后续轮次默认复用。也就是说，你改完 `SKILL.md` 之后，不一定当场生效。
+结合当前官方文档和示例，一个更稳妥的理解是：可用 Skill 往往会按会话快照，或者以延迟刷新的方式更新。也就是说，你改完 `SKILL.md` 之后，不一定当场生效。
 
-通常有三种刷新办法：
+在当前文档和示例里，常见会提到三种刷新路径：
 
 1. 直接开启新会话
 2. 让 Agent 执行一次“refresh skills”
-3. 重启 Gateway，或者依赖 watcher 在下一轮自动更新快照
+3. 重启 Gateway，或者依赖当前文档提到的 skills watcher / 下一轮刷新机制
 
-这也是为什么很多人会说“我明明改了 description，模型怎么还像没看见一样”。问题往往不在模型，而在会话拿到的还是旧快照。
+这也是为什么很多人会说“我明明改了 description，模型怎么还像没看见一样”。问题往往不在模型，而在当前会话拿到的还是旧快照。
 
 ### 6.3 再看依赖是不是只装在宿主机、没装进沙箱
 
@@ -533,7 +540,7 @@ OpenClaw 会在**会话启动时**对可用 Skill 做一次快照，后续轮次
 
 写到这里，Skill 这层设计应该已经比较清楚了。
 
-它不是一个重型插件系统，不需要你注册一堆生命周期钩子；它也不只是提示词模板，因为它还能挂脚本、做依赖门禁、接命令分发、走热更新。说得直接一点，它刚好落在一个顺手的位置：**够轻，也够工程化，团队拿来沉淀自己的领域能力不会太别扭**。
+它不是一个重型插件系统，不需要你注册一堆生命周期钩子；它也不只是提示词模板，因为它还能挂脚本、做依赖门禁、接命令分发，并参与当前的刷新/重载流程。说得直接一点，它刚好落在一个顺手的位置：**够轻，也够工程化，团队拿来沉淀自己的领域能力不会太别扭**。
 
 真正值得掌握的，不只是 `SKILL.md` 怎么写，而是下面这条完整链路：
 

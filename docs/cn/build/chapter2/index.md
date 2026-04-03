@@ -204,7 +204,10 @@ agent
 | 概念 | 更像什么 | 它负责什么 |
 |------|----------|-----------|
 | context | 当前桌面上摊开的材料 | 这一轮模型真正能看到的东西 |
-| memory | 放在抽屉里的长期笔记 | 以后需要时再拿出来用 |
+| memory | 磁盘上的长期记忆层 | 一部分会在会话开始前带入，剩下的再按需召回 |
+
+所以更稳的说法是：**context 不等于 memory，但 memory 也不是和 context 完全断开。**  
+memory 的“真相”在磁盘上，OpenClaw 会把其中最适合当前 run 的一部分先喂进 context，其余再通过工具和记忆机制补回来。
 
 一旦把 context 理解成“当前桌面”，OpenClaw 的执行流程就很好懂了：
 
@@ -362,14 +365,13 @@ OpenClaw 也在工程上把这件事做成了边界：
 先做 A，再做 B，再做 C，最后输出 D。
 ```
 
-通常更适合 Agent Loop 的，是这样：
+通常更适合 Agent Loop 的，是这种更接近真实任务的交法：
 
 ```text
-帮我完成 X。
-优先用最小改动解决。
-不要碰 Y。
-如果发现是 Z 类问题，先告诉我再继续。
-最后说明你改了什么、验证结果怎样。
+帮我把这个仓库里的 failing test 修到通过。
+优先用最小改动解决，不要顺手重构无关文件。
+如果你判断需要改公共接口，先停下来问我。
+最后给我一份改动说明，并告诉我测试是否真的跑过。
 ```
 
 为什么这种写法更合适？因为它把系统真正需要的信息给全了：
@@ -384,9 +386,9 @@ OpenClaw 也在工程上把这件事做成了边界：
 
 这里还有一个特别容易被低估、但实际非常重要的点：**上下文预算是真成本。**
 
-官方 [Context 文档](https://docs.openclaw.ai/concepts/context) 明确写着，一次 run 的 context 里会包括 system prompt、历史、工具调用和结果、附件，甚至工具 schema 本身；官方 [System Prompt 文档](https://docs.openclaw.ai/concepts/system-prompt) 也明确说了，workspace 里的 bootstrap 文件会被注入到 prompt 里。
+官方 [Context 文档](https://docs.openclaw.ai/concepts/context) 明确写着，一次 run 的 context 里会包括 system prompt、历史、工具调用和结果、附件，甚至工具 schema 本身；官方 [System Prompt 文档](https://docs.openclaw.ai/concepts/system-prompt) 也说明，像 `AGENTS.md`、`SOUL.md`、`TOOLS.md`、`IDENTITY.md`、`USER.md`、`MEMORY.md` 这类工作区文件会作为 Project Context 注入，而 `BOOTSTRAP.md`、daily memory 这类内容则只会在特定条件下出现，不能把它们都理解成“永远常驻全文”。
 
-翻成人话就是：你给的任务描述、工作区里的说明文件、之前的对话、工具输出，都会一起挤在同一个上下文窗口里。
+翻成人话就是：你给的任务描述、常驻工作区文件、之前的对话、工具输出，都会一起竞争同一个上下文窗口；而一些生命周期文件和记忆召回则只会在特定时机加入。
 
 这会直接带来两个使用上的后果：
 
