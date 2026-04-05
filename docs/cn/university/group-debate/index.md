@@ -643,6 +643,10 @@ DEBUG=* openclaw --profile architect gateway start
 收到。P99 读延迟 200ms 说明数据库已经是瓶颈了，这改变了我之前的判断...
 ```
 
+### Bot 回复报错 "Reasoning is mandatory for this endpoint"？
+
+某些模型（特别是通过 OpenRouter 调用时）要求开启 reasoning，否则 API 会拒绝请求。在飞书对话中发送 `/think minimal` 即可解决。也可以用 `/think low`、`/think medium` 或 `/think high`。
+
 ## 6. 进阶玩法
 
 ### 加入主持人 Bot
