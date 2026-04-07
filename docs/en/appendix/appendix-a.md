@@ -57,6 +57,7 @@ The biggest challenge in learning OpenClaw isn't the technology itself — it's 
 |----------|-----|-------------|
 | ⭐ OpenClaw Chinese Community | <https://clawd.org.cn> | Chinese community portal for domestic users to exchange experience, share knowledge, and help each other |
 | Claw123 Resource Directory | <https://www.claw123.com> | OpenClaw Chinese resource navigation site, aggregating tutorials, tools, and community links |
+| Awesome OpenClaw Asia | <https://awesome.tryopenclaw.asia> | Curated OpenClaw resource collection maintained by the Asia community |
 
 ### 2.2 Chinese Tutorials & Documentation
 
@@ -116,6 +117,7 @@ The biggest challenge in learning OpenClaw isn't the technology itself — it's 
 | 1Panel One-Click Deploy | <https://github.com/1Panel-dev/1Panel> | Domestic VPS panel with one-click OpenClaw installation |
 | MoltWorker | <https://github.com/cloudflare/moltworker> | Cloudflare's open-source OpenClaw deployment solution |
 | Alibaba Cloud Deployment | <https://developer.aliyun.com/article/1713898> | Cloud server deployment and Skill hands-on tutorial |
+| RemoteOpenClaw | <https://remoteopenclaw.com> | Hosted remote OpenClaw service — run without a local environment |
 
 > See [Appendix F: Cloud Service Deployment Guide](/en/appendix/appendix-f).
 
@@ -299,7 +301,6 @@ The biggest challenge in learning OpenClaw isn't the technology itself — it's 
 | Use Cases Collection | <https://github.com/hesamsheikh/awesome-openclaw-usecases> | Community application cases with 36 real-world validated scenarios |
 | ZooClaw Help Center | <https://zooclaw.ai/help> | ZooClaw official help documentation and user guide |
 | OpenClaw 101 | <https://openclaw101.dev> | OpenClaw beginner learning site covering core concepts and quick-start guides |
-| Awesome OpenClaw Asia | <https://awesome.tryopenclaw.asia> | Curated OpenClaw resource collection maintained by the Asia community |
 ---
 
 ## Recommended Learning Paths
