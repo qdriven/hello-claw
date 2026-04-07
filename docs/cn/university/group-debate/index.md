@@ -23,25 +23,29 @@
 
 ## 2. 整体架构
 
-```text
-┌─────────────────────────────────────────────────┐
-│                   飞书群                         │
-│                                                 │
-│  👤 人类：发起议题 / 最终审阅                      │
-│                                                 │
-│  🤖 Bot-A（架构师）  ← 独立 OpenClaw 实例 A       │
-│  🤖 Bot-B（SRE）     ← 独立 OpenClaw 实例 B       │
-│  🤖 Bot-C（产品经理） ← 独立 OpenClaw 实例 C       │
-│                                                 │
-│  讨论链：                                        │
-│  人类 → @Bot-A 发起议题                           │
-│  Bot-A 回复并 @Bot-B 追问运维视角                  │
-│  Bot-B 回复并 @Bot-C 追问业务约束                  │
-│  Bot-C 回复并 @Bot-A 提出新问题                    │
-│  ...（多轮循环）                                  │
-│  最后一轮 Bot 输出结论，不再 @其他人               │
-│                                                 │
-└─────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    box 飞书群
+        participant H as 👤 人类
+        participant A as 🤖 Bot-A（架构师）<br/>独立 OpenClaw 实例 A
+        participant B as 🤖 Bot-B（SRE）<br/>独立 OpenClaw 实例 B
+        participant C as 🤖 Bot-C（产品经理）<br/>独立 OpenClaw 实例 C
+    end
+
+    H->>A: @Bot-A 发起议题
+    A->>B: 回复并 @Bot-B 追问运维视角
+    B->>C: 回复并 @Bot-C 追问业务约束
+    C->>A: 回复并 @Bot-A 提出新问题
+
+    loop 多轮循环
+        A->>B: 继续讨论
+        B->>C: 继续讨论
+        C->>A: 继续讨论
+    end
+
+    Note over A,C: 最后一轮 Bot 输出结论，不再 @其他人
+    A-->>H: 最终结论
+    H->>H: 审阅
 ```
 
 关键设计点：

@@ -57,7 +57,7 @@ The biggest challenge in learning OpenClaw isn't the technology itself — it's 
 |----------|-----|-------------|
 | ⭐ OpenClaw Chinese Community | <https://clawd.org.cn> | Chinese community portal for domestic users to exchange experience, share knowledge, and help each other |
 | Claw123 Resource Directory | <https://www.claw123.com> | OpenClaw Chinese resource navigation site, aggregating tutorials, tools, and community links |
-| Awesome OpenClaw Asia | <https://awesome.tryopenclaw.asia> | Curated OpenClaw resource collection maintained by the Asia community |
+| Awesome OpenClaw Asia | <https://awesome.tryopenclaw.asia> | Curated OpenClaw resource collection maintained by the Asian community |
 
 ### 2.2 Chinese Tutorials & Documentation
 

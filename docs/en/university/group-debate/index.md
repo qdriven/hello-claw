@@ -23,25 +23,29 @@ Once set up, you can use it for:
 
 ## 2. Overall Architecture
 
-```text
-┌─────────────────────────────────────────────────────┐
-│                   Feishu Group                       │
-│                                                     │
-│  👤 Human: Initiate topic / Final review             │
-│                                                     │
-│  🤖 Bot-A (Architect)    ← OpenClaw Instance A      │
-│  🤖 Bot-B (SRE)          ← OpenClaw Instance B      │
-│  🤖 Bot-C (Product Mgr)  ← OpenClaw Instance C      │
-│                                                     │
-│  Discussion chain:                                   │
-│  Human → @Bot-A initiates topic                      │
-│  Bot-A replies and @Bot-B for ops perspective         │
-│  Bot-B replies and @Bot-C for business constraints    │
-│  Bot-C replies and @Bot-A with new questions          │
-│  ... (multi-round loop)                              │
-│  Final round: Bot outputs conclusion, no more @       │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    box Feishu Group
+        participant H as 👤 Human
+        participant A as 🤖 Bot-A (Architect)<br/>OpenClaw Instance A
+        participant B as 🤖 Bot-B (SRE)<br/>OpenClaw Instance B
+        participant C as 🤖 Bot-C (Product Mgr)<br/>OpenClaw Instance C
+    end
+
+    H->>A: @Bot-A initiates topic
+    A->>B: replies & @Bot-B for ops perspective
+    B->>C: replies & @Bot-C for business constraints
+    C->>A: replies & @Bot-A with new questions
+
+    loop Multi-round loop
+        A->>B: continue discussion
+        B->>C: continue discussion
+        C->>A: continue discussion
+    end
+
+    Note over A,C: Final round: Bot outputs conclusion, no more @
+    A-->>H: Final conclusion
+    H->>H: Review
 ```
 
 Key design points:
