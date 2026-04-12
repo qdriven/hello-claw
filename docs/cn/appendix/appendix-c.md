@@ -244,6 +244,7 @@ OpenClaw 的爆发催生了一个庞大的"龙虾生态"——从开源框架到
 | **JVSClaw** | 阿里云 | iOS / Android / iPad / Web | 手机一键养虾，每用户独享 6 核 12G 云沙箱（ClawSpace），3 分钟开箱 | ✅ 已上线 |
 | **MaxClaw** | MiniMax | Web（移动端访问） | 云端 Agent，手机浏览器可用 | ✅ 已上线 |
 | **droidclaw** | UnitedByAI | Android | OpenClaw 移动端适配，轻量自动化 | [开源](https://github.com/UnitedByAI/droidclaw) |
+| **PokeClaw** | agents-io | Android 9+ | 开源手机端 AI Agent，本地优先（Gemma 4 端侧推理），屏幕读取 + 工具链 + 跨 App 自动化，无需账号或 API Key（本地模式），亦支持云端模型 | [开源](https://github.com/agents-io/PokeClaw) |
 
 ### 8.2 嵌入式 / IoT
 

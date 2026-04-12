@@ -244,6 +244,7 @@ The following projects each have a distinct focus — minimalist design, securit
 | **JVSClaw** | Alibaba Cloud | iOS / Android / iPad / Web | Mobile one-tap agent setup, dedicated 6-core 12G cloud sandbox (ClawSpace) per user, 3-minute onboarding | ✅ Live |
 | **MaxClaw** | MiniMax | Web (mobile access) | Cloud Agent, accessible via mobile browser | ✅ Live |
 | **droidclaw** | UnitedByAI | Android | OpenClaw mobile adaptation, lightweight automation | [Open source](https://github.com/UnitedByAI/droidclaw) |
+| **PokeClaw** | agents-io | Android 9+ | Open-source on-device AI phone Agent, local-first (Gemma 4 on-device inference), screen reading + tool chain + cross-app automation, no account or API key required in local mode, optional cloud models for stronger tasks | [Open source](https://github.com/agents-io/PokeClaw) |
 
 ### 8.2 Embedded / IoT
 
