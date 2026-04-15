@@ -209,6 +209,7 @@ OpenClaw 的爆发催生了一个庞大的"龙虾生态"——从开源框架到
 | **AutoResearchClaw** | Python | aiming-lab 出品，自动化科研工作流：文献检索、实验设计、数据分析、论文撰写，端到端 AI 科研助手 | [aiming-lab/AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) |
 | **MiniClaw** | TypeScript | 极简 OpenClaw 替代，直接用 Claude Pro/ChatGPT Plus 订阅跑 Telegram，零 API 成本 | [htlin222/mini-claw](https://github.com/htlin222/mini-claw) |
 | **ChatClaw** | Go | 智麻出品，30MB 安装包一分钟装好，内置技能市场 + 知识库 + 记忆 + MCP + 定时任务，覆盖 WhatsApp/Telegram/Slack/Discord/Gmail/钉钉/企微/QQ/飞书 | [zhimaAi/ChatClaw](https://github.com/zhimaAi/ChatClaw) |
+| **ClawShield** | TS/Rust | AI Agent 治理层：Model-as-a-Judge 审计高危操作 + 实时推理链监控 + OHTTP 隐私路由 | [xinxin7/claw-shield](https://github.com/xinxin7/claw-shield) |
 
 ### 7.3 开源方案综合对比
 
@@ -230,6 +231,7 @@ OpenClaw 的爆发催生了一个庞大的"龙虾生态"——从开源框架到
 | **AutoResearchClaw** | Python | ★☆☆☆☆ | 低 | ★★★☆☆ | ★★☆☆☆ | 无 | — | 自动化科研 |
 | **MiniClaw** | TypeScript | ★☆☆☆☆ | 低 | ★★★☆☆ | ★☆☆☆☆ | 无 | ★☆☆☆☆ | 订阅复用/极简 |
 | **ChatClaw** | Go | ★☆☆☆☆ | 低 | ★★★☆☆ | ★★★☆☆ | 无 | ★★★★★ | IM 全覆盖/开源自建 |
+| **ClawShield** | TS/Rust | ★☆☆☆☆ | 低 | ★★★★★ | — | 无 | — | Agent 治理/安全审计 |
 
 ---
 
