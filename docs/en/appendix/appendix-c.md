@@ -209,6 +209,7 @@ The following projects each have a distinct focus — minimalist design, securit
 | **AutoResearchClaw** | Python | Made by aiming-lab, automated research workflow: literature search, experiment design, data analysis, paper writing, end-to-end AI research assistant | [aiming-lab/AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) |
 | **MiniClaw** | TypeScript | Minimalist OpenClaw alternative, run on Telegram directly using Claude Pro/ChatGPT Plus subscriptions, zero API cost | [htlin222/mini-claw](https://github.com/htlin222/mini-claw) |
 | **ChatClaw** | Go | Made by Zhima AI, 30MB package installs in one minute, built-in skill marketplace + knowledge base + memory + MCP + scheduled tasks, covers WhatsApp/Telegram/Slack/Discord/Gmail/DingTalk/WeCom/QQ/Feishu | [zhimaAi/ChatClaw](https://github.com/zhimaAi/ChatClaw) |
+| **ClawShield** | TS/Rust | AI Agent governance layer: Model-as-a-Judge for high-risk action auditing + real-time CoT monitoring + OHTTP privacy-preserving routing | [xinxin7/claw-shield](https://github.com/xinxin7/claw-shield) |
 
 ### 7.3 Open-Source Solutions Comprehensive Comparison
 
@@ -230,6 +231,7 @@ The following projects each have a distinct focus — minimalist design, securit
 | **AutoResearchClaw** | Python | ★☆☆☆☆ | Low | ★★★☆☆ | ★★☆☆☆ | None | — | Automated research |
 | **MiniClaw** | TypeScript | ★☆☆☆☆ | Low | ★★★☆☆ | ★☆☆☆☆ | None | ★☆☆☆☆ | Subscription reuse / minimalist |
 | **ChatClaw** | Go | ★☆☆☆☆ | Low | ★★★☆☆ | ★★★☆☆ | None | ★★★★★ | Full IM coverage / open-source self-hosted |
+| **ClawShield** | TS/Rust | ★☆☆☆☆ | Low | ★★★★★ | — | None | — | Agent governance / security auditing |
 
 ---
 
