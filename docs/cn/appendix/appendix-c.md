@@ -151,6 +151,7 @@ OpenClaw 的爆发催生了一个庞大的"龙虾生态"——从开源框架到
 | [**ArkClaw**](https://www.volcengine.com/experience/ark?mode=claw) | 字节跳动/火山引擎 | Web 浏览器 | Doubao-Seed-2.0 | OpenClaw 兼容 | 40GB | Coding Plan Pro 含 | ¥9.9/首月起 | 飞书 | 专属 ECS 资源隔离 | 飞书用户/字节生态 |
 | [**Kimi Claw**](https://kimi.com) | 月之暗面 | Web (kimi.com) | Kimi K2.5 | 5,000+ (ClawHub) | 40GB | ❌ 需 Allegretto 会员 | ~$39/月 | Telegram | BYOC 混合部署 | 国际化用户 |
 | [**MaxClaw**](https://maxclaw.ai/) | MiniMax/稀宇科技 | Web + Telegram/Discord/Slack | MiniMax M2.5 (MoE) | 内置全栈工具包 | — | ✅ 欢迎积分 + 每日积分 | ~$16/月起 | Telegram/Discord/Slack | 多模态（图/视频）内置 | 性价比/多媒体需求 |
+| [**EvoClaw**](https://evo-claw.com) | EvoClaw | Web 浏览器 | — | — | — | — | — | — | 官网在线体验入口 | 想快速在线体验的用户 |
 | [**WorkBuddy**](https://workbuddy.tencent.com) / [**QClaw**](https://claw.guanjia.qq.com) | 腾讯 | 本地 + 企微 Web | Hunyuan + 多模型 | 20+ 预置技能包 | — | ✅ 5,000 欢迎积分 | 免费 | 微信/QQ/企微/钉钉/飞书 | 唯一支持微信 | 微信/企业用户 |
 | [**DuClaw**](https://cloud.baidu.com/product/duclaw) | 百度 | Web 浏览器 | 文心/DeepSeek/Kimi-K2.5/GLM-5/MiniMax-M2.5 | 百度搜索/百科/学术等预置 Skills | — | ✅ 限时优惠 | ¥17.8/月 | — | 零部署浏览器直用，多模型切换 | 不想管服务器的轻度用户 |
 | [**AstronClaw**](https://astronclaw.com) | 科大讯飞 | Web 浏览器 | 星火 X2/MiniMax-M2.5/Kimi-K2.5/GLM-5 | 10,000+ Skills | — | ✅ 限时优惠 | ¥16.8/月 | 企微/钉钉/飞书 | 云端沙箱隔离，一键部署 | 讯飞模型生态用户 |
