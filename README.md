@@ -9,7 +9,7 @@
 <p align="center"><em>Hello Claw：领养你的 AI 龙虾助理，上龙虾大学学 Skills，从零构建属于你的智能助理</em></p>
 
 <p align="center">
-  📌 <a href="https://datawhalechina.github.io/hello-claw/">在线阅读</a> |  <a href="https://github.com/datawhalechina/easy-vibe">还想学 Vibe Coding</a>
+  📌 <a href="https://datawhalechina.github.io/hello-claw/">在线阅读</a> | <a href="https://evo-claw.com">evo-claw.com</a> |  <a href="https://github.com/datawhalechina/easy-vibe">还想学 Vibe Coding</a>
 </p>
 
 <p align="center">
@@ -32,6 +32,7 @@
 ## 在线阅读
 
 https://datawhalechina.github.io/hello-claw
+https://evo-claw.com
 
 ## 项目简介
 
