@@ -9,7 +9,7 @@
 <p align="center"><em>Hello Claw: AIロブスターアシスタントを迎え、ロブスター大学でSkillsを学び、あなただけの知的エージェントをゼロから構築しよう</em></p>
 
 <p align="center">
-  📌 <a href="https://datawhalechina.github.io/hello-claw/">オンラインで読む</a> | <a href="https://evo-claw.com">evo-claw.com</a> | 🚀 <a href="https://github.com/datawhalechina/easy-vibe">Vibe Coding も学びたい？</a>
+  📌 <a href="https://datawhalechina.github.io/hello-claw/">オンラインで読む</a> | 🚀 <a href="https://github.com/datawhalechina/easy-vibe">Vibe Coding も学びたい？</a>
 </p>
 
 <p align="center">
@@ -32,7 +32,6 @@
 ## オンラインで読む
 
 https://datawhalechina.github.io/hello-claw
-https://evo-claw.com
 
 ## はじめに
 
